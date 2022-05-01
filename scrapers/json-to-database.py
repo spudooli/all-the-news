@@ -1,0 +1,100 @@
+import mysql.connector
+import json
+import hashlib
+import yake
+import feedparser
+import sys
+import ssl
+if hasattr(ssl, '_create_unverified_context'):
+    ssl._create_default_https_context = ssl._create_unverified_context
+
+connection = mysql.connector.connect(
+    host="192.168.1.2",
+    user="sammy",
+    password="bobthefish",
+    database="spudooli_news",
+)
+
+cursor = connection.cursor()
+
+spin = 1
+def spinner():
+  global spin
+  if spin == 1:
+    spin = spin + 1
+    return "|"
+  elif spin == 2:
+    spin = spin + 1
+    return "/"
+  elif spin == 3:
+    spin = spin + 1
+    return "-"
+  elif spin == 4:
+    spin = 1
+    return "\\"
+
+def keywordextract(text):
+    language = "en"
+    max_ngram_size = 2
+    deduplication_thresold = 0.9
+    deduplication_algo = 'seqm'
+    windowSize = 1
+    numOfKeywords = 3
+    custom_kw_extractor = yake.KeywordExtractor(lan=language, n=max_ngram_size, dedupLim=deduplication_thresold, dedupFunc=deduplication_algo, windowsSize=windowSize, top=numOfKeywords, features=None)
+    keywords = custom_kw_extractor.extract_keywords(text)
+    keywordlist = ''
+    for kw, v in keywords:
+        keywordlist += kw + ', '
+    return keywordlist
+
+
+def processjson(file):
+    with open(file) as f:
+        data = json.load(f)
+        for item in data:
+            sys.stdout.write(spinner())
+            sys.stdout.flush()
+            sys.stdout.write('\b')
+            urlhash = hashlib.md5(item['url'].encode())
+            text = item['headline'] + " " + item['summary']
+            keywords = keywordextract(text)
+            print(".")
+            cursor.execute(
+                "INSERT IGNORE INTO news (source, section, headline, summary, url, urlhash, keywords) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                (item['source'], item['section'], item['headline'], item['summary'], item['url'], urlhash.hexdigest(), keywords),
+            )
+            connection.commit()
+
+
+processjson("/home/dave/Sites/all-the-news/json/newshub.json")
+processjson("/home/dave/Sites/all-the-news/json/rnz.json")
+processjson("/home/dave/Sites/all-the-news/json/1news.json")
+processjson("/home/dave/Sites/all-the-news/json/stuff.json")
+processjson("/home/dave/Sites/all-the-news/json/nzherald.json")
+
+
+
+def processrss(url, section):
+    feed = feedparser.parse(url)
+    for entry in feed["entries"]:
+        sys.stdout.write(spinner())
+        sys.stdout.flush()
+        sys.stdout.write('\b')
+        title = entry.get("title")
+        link = entry.get("link")
+        urlhash = hashlib.md5(link.encode())
+        text = title
+        keywords = keywordextract(text)
+        print(".")
+        cursor.execute(
+             "INSERT IGNORE INTO news (source, section, headline, url, urlhash, keywords) VALUES (%s, %s, %s, %s, %s, %s)",
+             ("NBR", section, title, link,  urlhash.hexdigest(), keywords),
+         )
+        connection.commit()
+
+processrss("https://www.nbr.co.nz/rss.xml", "News")
+processrss("https://www.nbr.co.nz/category/business/rss.xml", "Business")
+processrss("https://www.nbr.co.nz/category/tech/rss.xml", "Technology")
+processrss("https://www.nbr.co.nz/category/politics/rss.xml", "Politics")
+
+connection.close()

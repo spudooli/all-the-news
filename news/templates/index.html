@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+ {% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                {% for item in items %}
+                <h3><a href="{{ item[4] }}"> {{ item[1] }}</a></h3>
+                {{ item[2] }} <br>@ {{ item[3] }} - {{ item[5] }}<br>
+                <hr>
+                {% endfor %}
+
+                {% for item in section.hits %}
+                
+                 <a href="{{ item.document.url | safe }}">{{ item.document.headline | safe }}</a><br>
+                {{ item.document.summary }}<br>{{ item.document.source | safe }} <br>
+                
+             {% endfor %}
+                <hr>
+
+                <br>
+            </div>
+
+        </div>
+
+        {% endblock %}
