@@ -14,6 +14,8 @@ void (async () => {
 
         // create a page inside the browser
         const page = await browser.newPage();
+        await page.setUserAgent('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.60 Safari/537.36');
+
 
         // navigate to a website
         await page.goto(url, {
@@ -55,7 +57,7 @@ void (async () => {
         const fs = require('fs');
 
         fs.appendFile(
-            '/home/dave/Sites/all-the-news/json/rnz.json',
+            '/tmp/rnz.json',
             JSON.stringify(urls, null, 2), // optional params to format it nicely
             (err) => err ? console.error('Data not written!', err) : console.log('Data written!')
         )

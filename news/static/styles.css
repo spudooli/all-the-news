@@ -1,0 +1,17 @@
+a:link {
+  text-decoration: none;
+}
+
+a:hover {
+text-decoration: underline;
+}
+
+.headline {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.short {
+  font-size: 16px;
+  margin-bottom: 12px;
+}

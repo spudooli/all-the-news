@@ -5,12 +5,13 @@ import yake
 import feedparser
 import sys
 import ssl
+
 if hasattr(ssl, '_create_unverified_context'):
     ssl._create_default_https_context = ssl._create_unverified_context
 
 connection = mysql.connector.connect(
-    host="192.168.1.2",
-    user="sammy",
+    host="localhost",
+    user="root",
     password="bobthefish",
     database="spudooli_news",
 )
@@ -36,11 +37,11 @@ def spinner():
 def keywordextract(text):
     language = "en"
     max_ngram_size = 2
-    deduplication_thresold = 0.9
+    deduplication_threshold = 0.9
     deduplication_algo = 'seqm'
     windowSize = 1
-    numOfKeywords = 3
-    custom_kw_extractor = yake.KeywordExtractor(lan=language, n=max_ngram_size, dedupLim=deduplication_thresold, dedupFunc=deduplication_algo, windowsSize=windowSize, top=numOfKeywords, features=None)
+    numOfKeywords = 4
+    custom_kw_extractor = yake.KeywordExtractor(lan=language, n=max_ngram_size, dedupLim=deduplication_threshold, dedupFunc=deduplication_algo, windowsSize=windowSize, top=numOfKeywords, features=None)
     keywords = custom_kw_extractor.extract_keywords(text)
     keywordlist = ''
     for kw, v in keywords:
@@ -58,7 +59,6 @@ def processjson(file):
             urlhash = hashlib.md5(item['url'].encode())
             text = item['headline'] + " " + item['summary']
             keywords = keywordextract(text)
-            print(".")
             cursor.execute(
                 "INSERT IGNORE INTO news (source, section, headline, summary, url, urlhash, keywords) VALUES (%s, %s, %s, %s, %s, %s, %s)",
                 (item['source'], item['section'], item['headline'], item['summary'], item['url'], urlhash.hexdigest(), keywords),
@@ -66,35 +66,35 @@ def processjson(file):
             connection.commit()
 
 
-processjson("/home/dave/Sites/all-the-news/json/newshub.json")
-processjson("/home/dave/Sites/all-the-news/json/rnz.json")
-processjson("/home/dave/Sites/all-the-news/json/1news.json")
-processjson("/home/dave/Sites/all-the-news/json/stuff.json")
-processjson("/home/dave/Sites/all-the-news/json/nzherald.json")
+processjson("/tmp/newshub.json")
+processjson("/tmp/rnz.json")
+processjson("/tmp/1news.json")
+processjson("/tmp/stuff.json")
+processjson("/tmp/nzherald.json")
 
 
 
-def processrss(url, section):
-    feed = feedparser.parse(url)
-    for entry in feed["entries"]:
-        sys.stdout.write(spinner())
-        sys.stdout.flush()
-        sys.stdout.write('\b')
-        title = entry.get("title")
-        link = entry.get("link")
-        urlhash = hashlib.md5(link.encode())
-        text = title
-        keywords = keywordextract(text)
-        print(".")
-        cursor.execute(
-             "INSERT IGNORE INTO news (source, section, headline, url, urlhash, keywords) VALUES (%s, %s, %s, %s, %s, %s)",
-             ("NBR", section, title, link,  urlhash.hexdigest(), keywords),
-         )
-        connection.commit()
+# def processrss(url, section):
+#     feed = feedparser.parse(url)
+#     for entry in feed["entries"]:
+#         sys.stdout.write(spinner())
+#         sys.stdout.flush()
+#         sys.stdout.write('\b')
+#         title = entry.get("title")
+#         link = entry.get("link")
+#         urlhash = hashlib.md5(link.encode())
+#         text = title
+#         keywords = keywordextract(text)
+#         print(".")
+#         cursor.execute(
+#              "INSERT IGNORE INTO news (source, section, headline, url, urlhash, keywords) VALUES (%s, %s, %s, %s, %s, %s)",
+#              ("NBR", section, title, link,  urlhash.hexdigest(), keywords),
+#          )
+#         connection.commit()
 
-processrss("https://www.nbr.co.nz/rss.xml", "News")
-processrss("https://www.nbr.co.nz/category/business/rss.xml", "Business")
-processrss("https://www.nbr.co.nz/category/tech/rss.xml", "Technology")
-processrss("https://www.nbr.co.nz/category/politics/rss.xml", "Politics")
+# processrss("https://www.nbr.co.nz/rss.xml", "News")
+# processrss("https://www.nbr.co.nz/business/rss", "Business")
+# processrss("hhttps://www.nbr.co.nz/tech/rss", "Technology")
+# processrss("https://www.nbr.co.nz/politics/rss", "Politics")
 
 connection.close()

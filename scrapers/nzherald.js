@@ -78,7 +78,7 @@ void (async () => {
         const fs = require('fs');
 
         fs.appendFile(
-            '/home/dave/Sites/all-the-news/json/nzherald.json',
+            '/tmp/nzherald.json',
             JSON.stringify(urls, null, 2), // optional params to format it nicely
             (err) => err ? console.error('Data not written!', err) : console.log('Data written!')
         );

@@ -1,35 +1,34 @@
 from news import app, db
 from flask import render_template
-import json
-import typesense
+import redis
+from datetime import date
 
+r = redis.StrictRedis('localhost', 6379, charset="utf-8", decode_responses=True)
 
-client = typesense.Client({
-  'nodes': [{
-    'host': 'localhost', # For Typesense Cloud use xxx.a1.typesense.net
-    'port': '8108',      # For Typesense Cloud use 443
-    'protocol': 'http'   # For Typesense Cloud use https
-  }],
-  'api_key': 'aOY37YzmNajlFtblSeCJL87w9DYBbEiBHNhzpqpontc2Ile2',
-  'connection_timeout_seconds': 2
-})
-
+def getthenews(keyword, limit):
+    today = date.today()
+    newsday = f'{today.strftime("%Y-%m-%d")} 00:00:00'
+    cursor = db.mysql.connection.cursor()
+    likeString = f'%{keyword}%'
+    cursor.execute("SELECT id, headline, summary, source, url, keywords, section, scrapedate FROM news where keywords like %s and scrapedate > %s order by rand() limit %s", (likeString, newsday, limit))
+    newsitems = cursor.fetchall()
+    cursor.close()
+    return newsitems
 
 @app.route("/")
 def index():
-    cursor = db.mysql.connection.cursor()
-    cursor.execute("SELECT id, headline, summary, source, url, section FROM news limit 5")
-    items = cursor.fetchall()
-    cursor.close()
-    
-    section = client.collections['news'].documents.search({
-    'q': 'inflation',
-    'query_by': 'headline, summary, keywords',
-    })
+    item1 = getthenews("covid", 17)
+    item2 = getthenews("terror", 15)
+    item3 = getthenews("ukraine", 15)
+    item4 = getthenews("luxon", 12)
 
-    jsondata = json.dumps(section)
-    section=json.loads(jsondata)
-    return render_template('index.html', items = items, section = section)
+
+
+   
+
+
+
+    return render_template('index.html', item1 = item1, item2 = item2, item3 = item3, item4 = item4)
 
 
 @app.errorhandler(404)

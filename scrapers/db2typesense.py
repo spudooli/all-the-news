@@ -4,8 +4,8 @@ import time
 import sys
 
 connection = mysql.connector.connect(
-    host="192.168.1.2",
-    user="sammy",
+    host="localhost",
+    user="root",
     password="bobthefish",
     database="spudooli_news",
 )
