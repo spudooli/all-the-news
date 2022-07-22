@@ -38,7 +38,7 @@ connection = mysql.connector.connect(
 )
 
 cursor = connection.cursor()
-cursor.execute("SELECT id, headline, summary, source, url, keywords FROM news where section = 'business'")
+cursor.execute("SELECT id, headline, summary, source, url, keywords FROM news where section = 'sport'")
 items = cursor.fetchall()
 cursor.close()
 
@@ -135,7 +135,7 @@ for i in range(0,n):
 ##|  Hierarchically Cluster mat
 ##`----
 
-t = 0.9
+t = 1.15
 Z = linkage(mat, 'single')
 #dendrogram(Z, color_threshold=t)
 
