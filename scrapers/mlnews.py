@@ -15,7 +15,6 @@
 from xtermcolor import colorize
 import mysql.connector
 import nltk
-import re
 import operator
 import math
 from operator import itemgetter
@@ -177,6 +176,12 @@ for key in clusters:
     print (colorize("|============================================", ansi=10))
     clusterid = get_random_string(8)
     for id in clusters[key]:
+        cursor = connection.cursor()
+        mysql_insert_query = "update news set clusterid = %s where id = %s"
+        values = (clusterid, newsitemid[id])
+        cursor.execute(mysql_insert_query, values)
+        connection.commit()
+        cursor.close()
         print (colorize ('|', ansi=11)),
         print (colorize(id, ansi=5)), '\t',
         print (colorize ('|', ansi=11)),

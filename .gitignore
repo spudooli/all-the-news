@@ -1,12 +1,10 @@
-spudoolicom/static/photoblog/
 
-spudoolicom/static/images/
-spudoolicom/static/charts/
 config.py
-spudoolicom/config.py
-bin/config.py
+
 
 node_modules/
+
+news/__pycache__
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
