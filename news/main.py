@@ -2,7 +2,6 @@ from news import app, db
 from flask import render_template
 import redis
 from datetime import date
-import itertools
 
 r = redis.StrictRedis('localhost', 6379, charset="utf-8", decode_responses=True)
 
