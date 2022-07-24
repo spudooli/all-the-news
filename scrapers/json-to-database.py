@@ -60,8 +60,8 @@ def processjson(file):
             text = item['headline'] + " " + item['summary']
             keywords = keywordextract(text)
             cursor.execute(
-                "INSERT IGNORE INTO news (source, section, headline, summary, url, urlhash, keywords) VALUES (%s, %s, %s, %s, %s, %s, %s)",
-                (item['source'], item['section'], item['headline'], item['summary'], item['url'], urlhash.hexdigest(), keywords),
+                "INSERT IGNORE INTO news (source, section, headline, summary, url, urlhash, keywords, pubdate) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+                (item['source'], item['section'], item['headline'], item['summary'], item['url'], urlhash.hexdigest(), keywords, item['pubdate']),
             )
             connection.commit()
 

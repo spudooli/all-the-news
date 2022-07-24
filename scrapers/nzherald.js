@@ -49,10 +49,16 @@ void (async () => {
                     } else {
                         var headline = '';
                     };
+                    if (item.querySelector('time')) {
+                        var pubdate = item.querySelector('time').innerText;
+                    } else {
+                        var pubdate = '';
+                    };
 
                     results.push({
                         source: "NZHerald",
                         scrapedate: Date(),
+                        pubdate: pubdate,
                         section: section,
                         headline: headline,
                         summary: summary,

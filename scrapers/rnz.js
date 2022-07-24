@@ -31,6 +31,7 @@ void (async () => {
                     results.push({
                         source: "RNZ",
                         scrapedate: Date(),
+                        pubdate: '',
                         section: section,
                         headline: item.querySelector('h3').innerText,
                         summary: item.querySelector('div.o-digest__summary').innerText,

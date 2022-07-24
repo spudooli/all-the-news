@@ -35,6 +35,7 @@ void (async () => {
                     results.push({
                         source: "Newshub",
                         scrapedate: Date(),
+                        pubdate: '',
                         section: section,
                         headline: headline,
                         summary: '',

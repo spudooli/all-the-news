@@ -31,6 +31,7 @@ void (async () => {
                         source: "1 News",
                         scrapedate: Date(),
                         section: section,
+                        pubdate: '',
                         headline: item.querySelector('h3').innerText,
                         summary: item.querySelector('p.story-description').innerText,
                         url: 'https://www.1news.co.nz' + item.querySelector('a').getAttribute("href")

@@ -36,6 +36,7 @@ void (async () => {
                         source: "Stuff",
                         scrapedate: Date(),
                         section: section,
+                        pubdate: '',
                         headline: item.querySelector('h3').innerText,
                         summary: item.querySelector('p.intro-content').innerText,
                         url: 'https://www.stuff.co.nz' + item.querySelector('a').getAttribute("href")
