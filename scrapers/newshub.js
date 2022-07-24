@@ -32,13 +32,19 @@ void (async () => {
                     if (item.querySelector('h2')) {
                         headline = item.querySelector('h2').innerText;
                     }
+                    if (item.querySelector('p.c-NewsTile-synopsis')) {
+                        summary = item.querySelector('p.c-NewsTile-synopsis').innerText;
+                    } else {
+                        summary = '';
+                    }
+                    
                     results.push({
                         source: "Newshub",
                         scrapedate: Date(),
                         pubdate: '',
                         section: section,
                         headline: headline,
-                        summary: '',
+                        summary: summary,
                         url: item.querySelector('a').getAttribute("href")
                     });
                 });

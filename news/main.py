@@ -23,7 +23,7 @@ def getthenewsagain(section):
     cursor = db.mysql.connection.cursor()
     #cursor.execute("SELECT id, headline, summary, source, url, keywords, section, scrapedate FROM news where keywords like %s and scrapedate > %s order by rand() limit %s", (likeString, newsday, limit))
 
-    cursor.execute("SELECT id, headline, summary, source, url, clusterid, section, scrapedate FROM news where clusterid IS NOT NULL and section LIKE %s and scrapedate > %s order by clusterid", (section, newsday))
+    cursor.execute("SELECT id, headline, summary, source, url, clusterid, section, scrapedate, pubdate FROM news where clusterid IS NOT NULL and section LIKE %s and scrapedate > %s order by clusterid", (section, newsday))
     newsitems = cursor.fetchall()
     
     desc = cursor.description

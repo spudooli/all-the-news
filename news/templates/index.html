@@ -13,11 +13,11 @@
                     {% for item in items %}
                     {% if loop.index == 1 %}
                     <div class="headline"><a href="{{ item.url }}">{{ item.headline}}</a></div>
-                    <div class="short"><small>{{item.source}}</small> {{item.summary}}</div>
+                    <div class="short"><small>{{item.source}} </small> {{item.summary}}</div>
                     {% else %}
                     <div class="secondaryitems">                  
                     <div class="headline-other"><a href="{{ item.url }}">{{ item.headline}}</a></div>
-                    <div class="short"><small>{{item.source}}</small> {{item.summary}}</div>
+                    <div class="short"><small>{{item.source}} </small> {{item.summary}}</div>
                     </div>  
                     {% endif %}
 
