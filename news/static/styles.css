@@ -6,12 +6,20 @@ a:hover {
 text-decoration: underline;
 }
 
+.navbar-brand {
+  font-size: 32px;
+}
+
 .headline {
-  font-size: 20px;
-  font-weight: bold;
+  font-size: 22px;
 }
 
 .short {
   font-size: 16px;
   margin-bottom: 12px;
+  margin-left: 50px;
+}
+
+.navbar-nav {
+margin-left: 300px;
 }

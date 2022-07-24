@@ -23,6 +23,10 @@ from nltk import cluster
 from hcluster import linkage
 import random
 import string
+import sys
+from datetime import date
+
+processsection = sys.argv[1]
 
 def get_random_string(length):
     # choose from all lowercase letter
@@ -37,8 +41,13 @@ connection = mysql.connector.connect(
     database="spudooli_news",
 )
 
+today = date.today()
+newsday = f'{today.strftime("%Y-%m-%d")} 00:00:00'
+
 cursor = connection.cursor()
-cursor.execute("SELECT id, headline, summary, source, url, keywords FROM news where section = 'sport'")
+mysqlquery = "SELECT id, headline, summary, source, url, keywords FROM news where section LIKE %s and scrapedate > %s "
+mysqlsection = processsection
+cursor.execute(mysqlquery, (mysqlsection,newsday))
 items = cursor.fetchall()
 cursor.close()
 
@@ -49,7 +58,7 @@ source= []
 newsitemid=[]
 ct = -1
 for item in items:
-    newsitem = item[1] + " " + item[2]
+    newsitem = item[1] + " " + item[2] + " " + item[5]
     #working on function to constrain dates to specified time range
     #if e['published'] <= "Fri, 04 Apr 2014":
     words = nltk.wordpunct_tokenize((newsitem))
@@ -135,7 +144,7 @@ for i in range(0,n):
 ##|  Hierarchically Cluster mat
 ##`----
 
-t = 1.15
+t = 1
 Z = linkage(mat, 'single')
 #dendrogram(Z, color_threshold=t)
 

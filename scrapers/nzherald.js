@@ -2,6 +2,7 @@
 //const CONFIG = require('./config');
 const puppeteer = require('puppeteer');
 const url = process.argv[2];
+const section = process.argv[3];
 
 void (async () => {
     // wrapper to catch errors
@@ -26,7 +27,7 @@ void (async () => {
 
         await page.waitForSelector('div.fusion-app');
 
-        let urls = await page.evaluate(() => {
+        let urls = await page.evaluate((section) => {
             let results = [];
             let items = document.querySelectorAll('div.story-card__content');
 
@@ -37,11 +38,6 @@ void (async () => {
                         var summary = item.querySelector('p.story-card__deck').innerText;
                     } else {
                         var summary = '';
-                    };
-                    if (item.querySelector('div.story-card__kicker-wrapper')) {
-                        var section = item.querySelector('div.story-card__kicker-wrapper').innerText;
-                    } else {
-                        var section = '';
                     };
                     if (item.querySelector('a').getAttribute("href")) {
                         var url = item.querySelector('a').getAttribute("href");
@@ -69,7 +65,7 @@ void (async () => {
                 // display the error message in console
                 console.log(error);
             }
-        })
+        }, section)
 
 
         console.log(JSON.stringify(urls, null, 2));

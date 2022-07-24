@@ -2,6 +2,7 @@
 //const CONFIG = require('./config');
 const puppeteer = require('puppeteer')
 const url = process.argv[2];
+const section = process.argv[3];
 
 // this wrapper means immediately execute this code
 void (async () => {
@@ -21,18 +22,12 @@ void (async () => {
         await page.goto(url, {
             waitUntil: 'networkidle2'
         });
-        let urls = await page.evaluate(() => {
-            section = document.querySelector('h1').innerText;
+        let urls = await page.evaluate((section) => {
             let results = [];
             let items = document.querySelectorAll('li.o-digest');
 
             try {
                 items.forEach((item) => {
-                    // check to see if the product is on special
-                    // check to see if the product is on special
-                    //if (item.querySelector('span.gridProductStamp-price.savings-text')) {
-                        //var onspecialelement = "yes";
-                    //}
                     results.push({
                         source: "RNZ",
                         scrapedate: Date(),
@@ -48,7 +43,7 @@ void (async () => {
                 // display the error message in console
                 console.log(error);
             }
-        })
+        }, section)
 
 
         console.log(JSON.stringify(urls, null, 2))

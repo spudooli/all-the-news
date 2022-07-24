@@ -5,16 +5,26 @@
  <div class="container mt-5">
     <div class="row">
         <div class="col-sm-9">
+            <h2> {{ section }}</h2>
 
-{% for item in item1 %}
-                <small>{{item[3]}} - {{item[5]}}</small><br>
-                <div class="headline"><a href="{{ item[4]}}">{{ item[1]}}</a></div>
-                <div class="short">{{item[2]}}</div>
-{% endfor %}<br>
+            {% for clusterid, items in item1|groupby("clusterid") %}
+                
+                    {% for item in items %}
+                    
+                    <div class="headline"><a href="{{ item.url }}">{{ item.headline}}</a></div>
+                    <div class="short"><small>{{item.source}}</small> {{item.summary}}</div>
+               
+                  {% endfor %}
+                <hr>
+              {% endfor %}
+            
+            
+                        </div><br>
 
                 <hr>
-                    
-            </div>
+            <br>
+
+
         </div>
     </div>
         {% endblock %}
