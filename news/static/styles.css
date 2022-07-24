@@ -30,6 +30,17 @@ text-decoration: underline;
   margin-bottom: 12px;
   margin-left: 50px;
 }
+
 .navbar-nav {
 margin-left: 300px;
+}
+
+.section {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.current {
+  font-weight: bold;
+  border-bottom: 1px solid black;
 }

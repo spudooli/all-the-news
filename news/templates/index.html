@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
+{% set active_page = section %}
 
  {% block content %}
 
  <div class="container mt-5">
     <div class="row">
         <div class="col-sm-9">
-            <h2> {{ section }}</h2>
+            <h2 class="section"> {{ section }}</h2>
 
             {% for clusterid, items in item1|groupby("clusterid") %}
                 
