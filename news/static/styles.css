@@ -12,6 +12,11 @@ text-decoration: underline;
 
 .headline {
   font-size: 22px;
+  font-style: bold;
+}
+
+.headline-other {
+  font-size: 16px;
 }
 
 .short {
@@ -20,6 +25,11 @@ text-decoration: underline;
   margin-left: 50px;
 }
 
+.secondaryitems {
+  font-size: 16px;
+  margin-bottom: 12px;
+  margin-left: 50px;
+}
 .navbar-nav {
 margin-left: 300px;
 }
