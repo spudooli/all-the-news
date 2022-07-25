@@ -2,12 +2,19 @@ from news import app, db
 from flask import render_template, redirect
 import redis
 from datetime import date
+from datetime import datetime, timedelta
+
 
 r = redis.StrictRedis('localhost', 6379, charset="utf-8", decode_responses=True)
 
 def getthenewsagain(section):
-    today = date.today()
-    newsday = f'{today.strftime("%Y-%m-%d")} 00:00:00'
+    
+    if section == "business":
+        newsday = datetime.today() - timedelta(days=1)
+        newsday = f'{newsday.strftime("%Y-%m-%d")} 00:00:00'
+    else:
+        today = date.today()
+        newsday = f'{today.strftime("%Y-%m-%d")} 00:00:00'
     cursor = db.mysql.connection.cursor()
     cursor.execute("SELECT id, headline, summary, source, url, clusterid, section, scrapedate, pubdate, featured FROM news where clusterid IS NOT NULL and section LIKE %s and scrapedate > %s order by featured", (section, newsday))
     newsitems = cursor.fetchall()
