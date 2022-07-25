@@ -30,7 +30,16 @@
 
         <!-- Start right column -->
         <div class="col-sm-3">
-            <div id="liveupdates"></div>
+            
+
+            <div class="sidebar">
+                <div class="liveupdates" id="liveupdates">&nbsp;</div>
+                <h4>Some Trending Things</h4>
+                <ul>
+                    <li><a href="/trending/commonwealth-games">Commonwealth Games</a></li>
+                    <li><a href="/trending/monkeypox">Monkeypox</a></li>
+                    
+               </ul>
         
         </div>  
         <!-- End right column -->
@@ -42,7 +51,7 @@
 <script src="/static/js/jquery-3.6.0.min.js" type="text/javascript"></script>
 <script>
   function liveupdates() {
-    $.get('liveupdates/{{ lastid[0] }}', function (data) {
+    $.get('liveupdates/{{ lastid }}', function (data) {
       $('#liveupdates').text(data);
     });
   }
