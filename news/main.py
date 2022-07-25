@@ -115,7 +115,7 @@ def liveupdates(lastid):
     cursor.close()
     if int(currentlastid[0]) > lastid:
         print("It's bigger")
-        return "Refresh for new news"
+        return "<a href='/'>Refresh for new news</a>"
     else:
         print("It's not bigger")
         return ""

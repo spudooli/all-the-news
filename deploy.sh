@@ -12,7 +12,7 @@ cp -p /home/dave/Sites/all-the-news/news/* /var/www/news/news/
 
 echo "Deploying the static assets..."
 
-cp -p /home/dave/Sites/all-the-news/news/static/* /var/www/news/news/static/
+cp -pr /home/dave/Sites/all-the-news/news/static/* /var/www/news/news/static/
 cp -p /home/dave/Sites/all-the-news/news/config.py /var/www/news/news/config.py
 
 echo "Deploying the templates..."
