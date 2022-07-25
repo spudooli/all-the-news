@@ -1,5 +1,6 @@
 {% set navigation_bar = [
   ('/', 'NZ News', 'New Zealand'),
+  ('/te-ao-maori', 'Te Ao Māori', 'Te Ao Māori'),
   ('/business', 'Business', 'Business'),
   ('/politics', 'Politics', 'Politics'),
   ('/sport', 'Sport', 'Sport'),
@@ -7,7 +8,7 @@
   ('/world', 'World', 'World')
   ] -%}
   {% set active_page = active_page|default('nz') -%}
-  
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,6 +33,7 @@
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
+         
           <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               {% for href, id, caption in navigation_bar %}
@@ -40,11 +42,13 @@
                   {% endfor %}
               </li>
             </ul>
+            
           </div>
         </div>
       </nav>
     </header>
   </div>
+
 {% block header %}{% endblock %}
 {% for message in get_flashed_messages() %}
 <div class="flash">{{ message }}</div>
@@ -53,17 +57,11 @@
 
 <footer class="footer mt-auto py-3">
   <div class="container">
-    <span class="text-muted"><p>© Copyright {{ now.year }} <br><a href="http://www.spudooli.com" target="_blank">Spudooli Investments
-      Ltd</a></p></span>
+    <span class="text-muted"><p>© Copyright {{ now.year }}  <a href="http://www.spudooli.com" target="_blank">Spudooli Investments Ltd</a></p></span>
   </div>
 </footer>
-<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<!-- <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script> -->
 </body>
 
 </html>
-
-
-<ul class="nav ">
-
-</ul>

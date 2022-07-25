@@ -44,3 +44,11 @@ margin-left: 300px;
   font-weight: bold;
   border-bottom: 1px solid black;
 }
+
+.sourcename {
+  position: relative;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 500;
+}
