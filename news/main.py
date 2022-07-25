@@ -5,7 +5,6 @@ from datetime import datetime, timedelta
 
 
 def getthenewsagain(section):
-    
     if section == "business" or section == "technology":
         newsday = datetime.today() - timedelta(days=1)
         newsday = f'{newsday.strftime("%Y-%m-%d")} 00:00:00'
@@ -23,6 +22,20 @@ def getthenewsagain(section):
     return data
 
 
+def getthetrending(keyword):
+    newsday = datetime.today() - timedelta(days=10)
+    newsday = f'{newsday.strftime("%Y-%m-%d")} 00:00:00'
+    cursor = db.mysql.connection.cursor()
+    cursor.execute("SELECT id, headline, summary, source, url, clusterid, section, scrapedate, pubdate, keywords FROM news where clusterid IS NOT NULL and keywords LIKE %s and scrapedate > %s", ("%" + keyword + "%", newsday))
+    newsitems = cursor.fetchall()
+    desc = cursor.description
+    column_names = [col[0] for col in desc]
+    data = [dict(zip(column_names, row))  
+        for row in newsitems]
+    cursor.close()
+    return data
+
+
 def getthelastid():
     # Get the last id out of the database to provide a way to warn there is new content
     cursor = db.mysql.connection.cursor()
@@ -30,6 +43,7 @@ def getthelastid():
     lastid = cursor.fetchone()
     cursor.close()
     return lastid[0]
+
 
 @app.route('/', strict_slashes=False, defaults={'section': None} )
 @app.route("/<section>")
@@ -61,6 +75,29 @@ def index(section):
     elif section == 'te-ao-maori':
         section = 'Te Ao Māori'
         item1 = getthenewsagain("te ao māori")
+
+    else:
+        return redirect('/', code=301)
+
+    lastid = getthelastid()
+
+    return render_template('index.html', item1 = item1, section = section, lastid = lastid)
+
+
+@app.route("/trending/<keyword>")
+def trending(keyword):
+    print(keyword)
+    if keyword == 'monkeypox':
+        section = 'Monkey Pox'
+        item1 = getthetrending("monkeypox")
+
+    elif keyword == 'commonwealth-games':
+        section = 'Commonwealth Games'
+        item1 = getthetrending("commonwealth games")
+    
+    elif keyword == 'foot-and-mouth':
+        section = 'Foot and Mouth Disease'
+        item1 = getthetrending("mouth disease")
 
     else:
         return redirect('/', code=301)
