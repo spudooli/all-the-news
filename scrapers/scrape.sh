@@ -17,6 +17,9 @@ node newshub.js "https://www.newshub.co.nz/home/new-zealand.html" "nz"
 node newshub.js "https://www.newshub.co.nz/home/politics.html" "politics"
 node newshub.js "https://www.newshub.co.nz/home/sport.html" "sport"
 node newshub.js "https://www.newshub.co.nz/home/money.html" "business"
+node newshub.js "https://www.newshub.co.nz/home/technology.html" "technology"
+node newshub.js "https://www.newshub.co.nz/home/world.html" "world"
+
 
 sed -i -e 's/\]\[/\,/g' /tmp/newshub.json
 

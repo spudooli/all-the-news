@@ -72,6 +72,10 @@ processjson("/tmp/1news.json")
 processjson("/tmp/stuff.json")
 processjson("/tmp/nzherald.json")
 
+# Delete news items that are opinion
+cursor.execute(
+            "DELETE FROM `news` WHERE `headline` LIKE '%opinion%' ", )
+connection.commit()
 
 
 # def processrss(url, section):
