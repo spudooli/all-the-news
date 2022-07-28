@@ -22,13 +22,15 @@ text-decoration: underline;
 .short {
   font-size: 16px;
   margin-bottom: 12px;
-  margin-left: 50px;
+  /* margin-left: 50px; */
 }
 
 .secondaryitems {
   font-size: 16px;
   margin-bottom: 12px;
-  margin-left: 50px;
+  margin-left: 0;
+  border-left: 1px solid #ccc;
+  padding-left: 20px;
 }
 
 .navbar-nav {
