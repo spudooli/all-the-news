@@ -31,6 +31,8 @@ node 1news.js "https://www.1news.co.nz/world/" "world"
 # node 1news.js "https://www.1news.co.nz/sport/" "sport"
 node 1news.js "https://www.1news.co.nz/politics/" "politics"
 node 1news.js "https://www.1news.co.nz/tags/business/" "business"
+node 1news.js "https://www.1news.co.nz/sport/rugby/" "sport"
+node 1news.js "https://www.1news.co.nz/tags/commonwealth-games/" "sport"
 
 sed -i -e 's/\]\[/\,/g' /tmp/1news.json
 
@@ -44,6 +46,7 @@ node stuff.js "https://www.stuff.co.nz/world/more_headlines" "world"
 node stuff.js "https://www.stuff.co.nz/sport/more_headlines" "sport"
 node stuff.js "https://www.stuff.co.nz/technology/more_headlines" "technology"
 # node stuff.js "https://www.stuff.co.nz/pou-tiaki" "te ao māori"
+node stuff.js "https://www.stuff.co.nz/sport/commonwealth-games" "sport"
 
 sed -i -e 's/\]\[/\,/g' /tmp/stuff.json
 

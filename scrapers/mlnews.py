@@ -190,6 +190,7 @@ for key in clusters:
         values = (clusterid, newsitemid[id])
         cursor.execute(mysql_insert_query, values)
         connection.commit()
+        # TODO Count number of clusterids and update count into rows
         cursor.close()
         print (colorize ('|', ansi=11)),
         print (colorize(id, ansi=5)), '\t',
