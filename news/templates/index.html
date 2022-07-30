@@ -7,11 +7,13 @@
     <div class="row">
         <div class="col-sm-9">
             <h2 class="section"> {{ section }}</h2>
-
-            {% for clusterid, items in item1 |groupby("clusterid")  %}
-                
+        
+            {% for clusterid, items in item1 | sort(attribute='clustercount') | groupby("clusterid")  %}
+                {{items}}
                     {% for item in items  %}
+                    
                     {% if loop.index == 1 %}
+                    <div data-sort="{{ item.clustercount }}">
                     <div class="headline"><a href="{{ item.url }}">{{ item.headline}}</a></div>
                     <div class="short"> {{item.summary}} <div class="sourcename">{{item.source}} &nbsp;&nbsp;&nbsp; {{ item.pubdate|default('') }}</div></div>
                     {% else %}
@@ -20,12 +22,10 @@
                     <div class="short"> {{item.summary}}  <div class="sourcename">{{item.source}}</div></div>
                     </div>  
                     {% endif %}
-
                     {% endfor %}
+                    </div>
                 <hr>
               {% endfor %}
-            
-
         </div>
 
         <!-- Start right column -->
@@ -55,6 +55,9 @@
 
 <script src="/static/js/jquery-3.6.0.min.js" type="text/javascript"></script>
 <script>
+
+
+
   function liveupdates() {
     $.get('/liveupdates/{{ lastid }}', function (data) {
       $('#liveupdates').html(data);

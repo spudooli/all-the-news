@@ -12,7 +12,7 @@ def getthenewsagain(section):
         today = date.today()
         newsday = f'{today.strftime("%Y-%m-%d")} 00:00:00'
     cursor = db.mysql.connection.cursor()
-    cursor.execute("SELECT id, headline, summary, source, url, clusterid, section, scrapedate, pubdate, featured FROM news where clusterid IS NOT NULL and section LIKE %s and scrapedate > %s", (section, newsday))
+    cursor.execute("SELECT id, headline, summary, source, url, clusterid, section, scrapedate, pubdate, featured, clustercount FROM news where clusterid IS NOT NULL and section LIKE %s and scrapedate > %s  order by clustercount DESC, clusterid", (section, newsday))
     newsitems = cursor.fetchall()
     desc = cursor.description
     column_names = [col[0] for col in desc]
@@ -26,7 +26,7 @@ def getthetrending(keyword):
     newsday = datetime.today() - timedelta(days=10)
     newsday = f'{newsday.strftime("%Y-%m-%d")} 00:00:00'
     cursor = db.mysql.connection.cursor()
-    cursor.execute("SELECT id, headline, summary, source, url, clusterid, section, scrapedate, pubdate, keywords FROM news where clusterid IS NOT NULL and keywords LIKE %s and scrapedate > %s", ("%" + keyword + "%", newsday))
+    cursor.execute("SELECT id, headline, summary, source, url, clusterid, section, scrapedate, pubdate, keywords, clustercount FROM news where clusterid IS NOT NULL and keywords LIKE %s and scrapedate > %s", ("%" + keyword + "%", newsday))
     newsitems = cursor.fetchall()
     desc = cursor.description
     column_names = [col[0] for col in desc]

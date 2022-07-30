@@ -45,7 +45,7 @@ today = date.today()
 newsday = f'{today.strftime("%Y-%m-%d")} 00:00:00'
 
 cursor = connection.cursor()
-mysqlquery = "SELECT id, headline, summary, source, url, keywords FROM news where section LIKE %s and scrapedate > %s "
+mysqlquery = "SELECT id, headline, summary, source, url, keywords FROM news where section = %s and scrapedate > %s "
 mysqlsection = processsection
 cursor.execute(mysqlquery, (mysqlsection,newsday))
 items = cursor.fetchall()
@@ -58,7 +58,7 @@ source= []
 newsitemid=[]
 ct = -1
 for item in items:
-    newsitem = item[1] + " " + item[2] + " " + item[5]
+    newsitem = item[1] + " " + item[2] 
     #working on function to constrain dates to specified time range
     #if e['published'] <= "Fri, 04 Apr 2014":
     words = nltk.wordpunct_tokenize((newsitem))
@@ -181,17 +181,39 @@ def extract_clusters(Z,threshold,n):
 
 clusters = extract_clusters(Z,t,n)
 
+# set custerid to null for all news items in the section so we can set a new one
+cursor = connection.cursor()
+mysqlquery = "UPDATE news SET clusterid = NULL where section = %s"
+cursor.execute(mysqlquery, (mysqlsection,))
+connection.commit()
+
+
 for key in clusters:
     print (colorize("|============================================", ansi=10))
     clusterid = get_random_string(8)
     for id in clusters[key]:
         cursor = connection.cursor()
+
+        # add clusterid to newsitem
         mysql_insert_query = "update news set clusterid = %s where id = %s"
         values = (clusterid, newsitemid[id])
         cursor.execute(mysql_insert_query, values)
         connection.commit()
-        # TODO Count number of clusterids and update count into rows
+
+        # Count number of the same clusterid 
+        mysqlquery = "SELECT count(id) as clustercount FROM news where clusterid = %s"
+        cursor.execute(mysqlquery, (clusterid,))
+        clustercount = cursor.fetchone()
+
+        # and update that count into all matching clusterids so that I can sort by it 
+        # on the news page
+        mysql_insert_query = "update news set clustercount = %s where clusterid = %s"
+        values = (clustercount[0], clusterid)
+        cursor.execute(mysql_insert_query, values)
+        connection.commit()
+
         cursor.close()
+
         print (colorize ('|', ansi=11)),
         print (colorize(id, ansi=5)), '\t',
         print (colorize ('|', ansi=11)),
