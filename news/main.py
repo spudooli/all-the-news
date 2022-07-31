@@ -5,8 +5,11 @@ from datetime import datetime, timedelta
 
 
 def getthenewsagain(section):
-    if section == "business" or section == "technology":
-        newsday = datetime.today() - timedelta(days=1)
+    if section == "business" or section == "technology" or section == "politics":
+        newsday = datetime.today() - timedelta(days=3)
+        newsday = f'{newsday.strftime("%Y-%m-%d")} 00:00:00'
+    elif section == "te ao maori":
+        newsday = datetime.today() - timedelta(days=10)
         newsday = f'{newsday.strftime("%Y-%m-%d")} 00:00:00'
     else:
         today = date.today()
