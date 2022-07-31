@@ -81,11 +81,22 @@ def index(section):
 
     lastid = getthelastid()
 
-    return render_template('index.html', item1 = item1, section = section, lastid = lastid)
+    # Get the featured/trending news items
+    cursor = db.mysql.connection.cursor()
+    cursor.execute("SELECT id, title, url, category FROM featured_news")
+    featureditems = cursor.fetchall()
+    desc = cursor.description
+    column_names = [col[0] for col in desc]
+    featured = [dict(zip(column_names, row))  
+        for row in featureditems]
+    cursor.close()
+
+    return render_template('index.html', item1 = item1, section = section, lastid = lastid, featured = featured)
 
 
 @app.route("/trending/<keyword>")
 def trending(keyword):
+
     print(keyword)
     if keyword == 'monkeypox':
         section = 'Monkey Pox'
@@ -104,7 +115,7 @@ def trending(keyword):
 
     lastid = getthelastid()
 
-    return render_template('index.html', item1 = item1, section = section, lastid = lastid)
+    return render_template('index.html', data = item1, section = section, lastid = lastid)
 
 
 @app.route("/liveupdates/<int:lastid>")
@@ -115,7 +126,7 @@ def liveupdates(lastid):
     cursor.close()
     if int(currentlastid[0]) > lastid:
         print("It's bigger")
-        return "<a href='/' style='border: 1px solid rgb(224, 14, 14);'>Refresh for new news</a>"
+        return "<a href='/'>Refresh for new news</a>"
     else:
         print("It's not bigger")
         return ""

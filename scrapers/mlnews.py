@@ -46,8 +46,7 @@ newsday = f'{today.strftime("%Y-%m-%d")} 00:00:00'
 
 cursor = connection.cursor()
 mysqlquery = "SELECT id, headline, summary, source, url, keywords FROM news where section = %s and scrapedate > %s "
-mysqlsection = processsection
-cursor.execute(mysqlquery, (mysqlsection,newsday))
+cursor.execute(mysqlquery, (processsection,newsday))
 items = cursor.fetchall()
 cursor.close()
 
@@ -184,7 +183,7 @@ clusters = extract_clusters(Z,t,n)
 # set custerid to null for all news items in the section so we can set a new one
 cursor = connection.cursor()
 mysqlquery = "UPDATE news SET clusterid = NULL where section = %s"
-cursor.execute(mysqlquery, (mysqlsection,))
+cursor.execute(mysqlquery, (processsection,))
 connection.commit()
 
 

@@ -8,7 +8,7 @@ fi
 echo "Copying the app..."
 
 cp -p /home/dave/Sites/all-the-news/news/* /var/www/news/news/
-
+cp -pr /home/dave/Sites/all-the-news/scrapers/* /var/www/news/scrapers/
 
 echo "Deploying the static assets..."
 

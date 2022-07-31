@@ -9,8 +9,7 @@
             <h2 class="section"> {{ section }}</h2>
         
             {% for clusterid, items in item1 | sort(attribute='clustercount') | groupby("clusterid")  %}
-                {{items}}
-                    {% for item in items  %}
+            {% for item in items  %}
                     
                     {% if loop.index == 1 %}
                     <div data-sort="{{ item.clustercount }}">
@@ -37,15 +36,17 @@
 
 
                 <h4>Some Trending Things</h4>
+
+                {% for category, feature in featured | groupby("category")  %}
+                
+                {{ category}}
+
+                {% for thing in feature  %}
                 <ul>
-                    <li><a href="/trending/commonwealth-games">Commonwealth Games</a></li>
-                    <br>
-                    <li>Some diseases to watch</li>
-                    <li><a href="/trending/monkeypox">Monkeypox</a></li>
-                    <li><a href="/trending/foot-and-mouth">Foot and Mouth</a></li>
-                    
+                  <li><a href="/trending/{{thing.url }}">{{ thing.title }}</a></li>
                </ul>
-        
+               {% endfor %}
+               {% endfor %}
         </div>  
         <!-- End right column -->
 
