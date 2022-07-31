@@ -38,9 +38,9 @@
                 <h4>Some Trending Things</h4>
 
                 {% for category, feature in featured | groupby("category")  %}
-                
+                <br>
                 {{ category}}
-
+                <br>
                 {% for thing in feature  %}
                 <ul>
                   <li><a href="/trending/{{thing.url }}">{{ thing.title }}</a></li>

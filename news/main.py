@@ -22,7 +22,7 @@ def getthenewsagain(section):
     return data
 
 
-def getthetrending(keyword):
+def getthetrendingitems(keyword):
     newsday = datetime.today() - timedelta(days=10)
     newsday = f'{newsday.strftime("%Y-%m-%d")} 00:00:00'
     cursor = db.mysql.connection.cursor()
@@ -44,6 +44,17 @@ def getthelastid():
     cursor.close()
     return lastid[0]
 
+def getfeatured() :
+    # Get the featured/trending news items
+    cursor = db.mysql.connection.cursor()
+    cursor.execute("SELECT id, title, url, category FROM featured_news")
+    featureditems = cursor.fetchall()
+    desc = cursor.description
+    column_names = [col[0] for col in desc]
+    featured = [dict(zip(column_names, row))  
+        for row in featureditems]
+    cursor.close()
+    return featured
 
 @app.route('/', strict_slashes=False, defaults={'section': None} )
 @app.route("/<section>")
@@ -81,15 +92,7 @@ def index(section):
 
     lastid = getthelastid()
 
-    # Get the featured/trending news items
-    cursor = db.mysql.connection.cursor()
-    cursor.execute("SELECT id, title, url, category FROM featured_news")
-    featureditems = cursor.fetchall()
-    desc = cursor.description
-    column_names = [col[0] for col in desc]
-    featured = [dict(zip(column_names, row))  
-        for row in featureditems]
-    cursor.close()
+    featured = getfeatured()
 
     return render_template('index.html', item1 = item1, section = section, lastid = lastid, featured = featured)
 
@@ -100,22 +103,24 @@ def trending(keyword):
     print(keyword)
     if keyword == 'monkeypox':
         section = 'Monkey Pox'
-        item1 = getthetrending("monkeypox")
+        item1 = getthetrendingitems("monkeypox")
 
     elif keyword == 'commonwealth-games':
         section = 'Commonwealth Games'
-        item1 = getthetrending("commonwealth games")
+        item1 = getthetrendingitems("commonwealth games")
     
     elif keyword == 'foot-and-mouth':
         section = 'Foot and Mouth Disease'
-        item1 = getthetrending("mouth disease")
+        item1 = getthetrendingitems("mouth disease")
 
     else:
         return redirect('/', code=301)
 
     lastid = getthelastid()
 
-    return render_template('index.html', data = item1, section = section, lastid = lastid)
+    featured = getfeatured()
+
+    return render_template('index.html', item1 = item1, section = section, lastid = lastid, featured = featured)
 
 
 @app.route("/liveupdates/<int:lastid>")

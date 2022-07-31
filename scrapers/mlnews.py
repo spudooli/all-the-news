@@ -25,6 +25,7 @@ import random
 import string
 import sys
 from datetime import date
+from datetime import datetime, timedelta
 
 processsection = sys.argv[1]
 
@@ -41,12 +42,17 @@ connection = mysql.connector.connect(
     database="spudooli_news",
 )
 
-today = date.today()
-newsday = f'{today.strftime("%Y-%m-%d")} 00:00:00'
+# Some sections have new news items much slower than others
+if processsection == "business" or processsection == "technology" or processsection == "politics":
+    newsday = datetime.today() - timedelta(days=3)
+    newsday = f'{newsday.strftime("%Y-%m-%d")} 00:00:00'
+else:
+    today = date.today()
+    newsday = f'{today.strftime("%Y-%m-%d")} 00:00:00'
 
 cursor = connection.cursor()
 mysqlquery = "SELECT id, headline, summary, source, url, keywords FROM news where section = %s and scrapedate > %s "
-cursor.execute(mysqlquery, (processsection,newsday))
+cursor.execute(mysqlquery, (processsection, newsday))
 items = cursor.fetchall()
 cursor.close()
 
