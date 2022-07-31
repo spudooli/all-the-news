@@ -44,6 +44,7 @@ def getthelastid():
     cursor.close()
     return lastid[0]
 
+
 def getfeatured() :
     # Get the featured/trending news items
     cursor = db.mysql.connection.cursor()
@@ -56,6 +57,7 @@ def getfeatured() :
     cursor.close()
     return featured
 
+
 def lastupdated():
     # Get the last updated date
     cursor = db.mysql.connection.cursor()
@@ -63,6 +65,7 @@ def lastupdated():
     lastupdated = cursor.fetchone()
     cursor.close()
     return lastupdated[0]
+
 
 @app.route('/', strict_slashes=False, defaults={'section': None} )
 @app.route("/<section>")
@@ -107,30 +110,26 @@ def index(section):
     return render_template('index.html', item1 = item1, section = section, lastid = lastid, featured = featured, lastupdateddate = lastupdateddate)
 
 
-@app.route("/trending/<keyword>")
-def trending(keyword):
+@app.route("/trending/<url>")
+def trending(url):
 
-    print(keyword)
-    if keyword == 'monkeypox':
-        section = 'Monkey Pox'
-        item1 = getthetrendingitems("monkeypox")
+    print(url)
 
-    elif keyword == 'commonwealth-games':
-        section = 'Commonwealth Games'
-        item1 = getthetrendingitems("commonwealth games")
-    
-    elif keyword == 'foot-and-mouth':
-        section = 'Foot and Mouth Disease'
-        item1 = getthetrendingitems("mouth disease")
+    cursor = db.mysql.connection.cursor()
+    cursor.execute("SELECT id, keywords, title, url FROM featured_news where url LIKE %s", ("%" + url + "%", ))  
+    data = cursor.fetchone()
 
-    else:
-        return redirect('/', code=301)
+    keyword = data[1]
+    section = data[2]
+    item1 = getthetrendingitems(keyword)
 
     lastid = getthelastid()
 
     featured = getfeatured()
 
-    return render_template('index.html', item1 = item1, section = section, lastid = lastid, featured = featured)
+    lastupdateddate = lastupdated()
+
+    return render_template('index.html', item1 = item1, section = section, lastid = lastid, featured = featured, lastupdateddate = lastupdateddate)
 
 
 @app.route("/liveupdates/<int:lastid>")
