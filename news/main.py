@@ -56,6 +56,14 @@ def getfeatured() :
     cursor.close()
     return featured
 
+def lastupdated():
+    # Get the last updated date
+    cursor = db.mysql.connection.cursor()
+    cursor.execute("SELECT scrapedate FROM news order by scrapedate desc limit 1")
+    lastupdated = cursor.fetchone()
+    cursor.close()
+    return lastupdated[0]
+
 @app.route('/', strict_slashes=False, defaults={'section': None} )
 @app.route("/<section>")
 def index(section):
@@ -94,7 +102,9 @@ def index(section):
 
     featured = getfeatured()
 
-    return render_template('index.html', item1 = item1, section = section, lastid = lastid, featured = featured)
+    lastupdateddate = lastupdated()
+
+    return render_template('index.html', item1 = item1, section = section, lastid = lastid, featured = featured, lastupdateddate = lastupdateddate)
 
 
 @app.route("/trending/<keyword>")
