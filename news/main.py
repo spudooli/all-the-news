@@ -5,11 +5,14 @@ from datetime import datetime, timedelta
 
 
 def getthenewsagain(section):
-    if section == "business" or section == "technology" or section == "politics":
+    if section == "business" or section == "technology" or section == "politics" or section == "world":
         newsday = datetime.today() - timedelta(days=3)
         newsday = f'{newsday.strftime("%Y-%m-%d")} 00:00:00'
     elif section == "te ao maori":
         newsday = datetime.today() - timedelta(days=10)
+        newsday = f'{newsday.strftime("%Y-%m-%d")} 00:00:00'
+    elif section == "sport":
+        newsday = datetime.today() - timedelta(days=2)
         newsday = f'{newsday.strftime("%Y-%m-%d")} 00:00:00'
     else:
         today = date.today()
@@ -99,7 +102,7 @@ def index(section):
 
     elif section == 'te-ao-maori':
         section = 'Te Ao Māori'
-        item1 = getthenewsagain("te ao māori")
+        item1 = getthenewsagain("te ao maori")
 
     else:
         return redirect('/', code=301)

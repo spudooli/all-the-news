@@ -7,7 +7,7 @@ node /var/www/news/scrapers/rnz.js "https://www.rnz.co.nz/news/world" "world"
 node /var/www/news/scrapers/rnz.js "https://www.rnz.co.nz/news/political" "politics"
 node /var/www/news/scrapers/rnz.js "https://www.rnz.co.nz/news/business" "business"
 node /var/www/news/scrapers/rnz.js "https://www.rnz.co.nz/news/sport" "sport"
-node /var/www/news/scrapers/rnz.js "https://www.rnz.co.nz/news/te-manu-korihi" "te ao māori"
+node /var/www/news/scrapers/rnz.js "https://www.rnz.co.nz/news/te-manu-korihi" "te ao maori"
 
 sed -i -e 's/\]\[/\,/g' /tmp/rnz.json
 
@@ -59,7 +59,7 @@ node /var/www/news/scrapers/nzherald.js "https://www.nzherald.co.nz/world/" "wor
 node /var/www/news/scrapers/nzherald.js "https://www.nzherald.co.nz/sport/" "sport"
 node /var/www/news/scrapers/nzherald.js "https://www.nzherald.co.nz/nz/" "nz"
 node /var/www/news/scrapers/nzherald.js "https://www.nzherald.co.nz/technology/" "technology"
-node /var/www/news/scrapers/nzherald.js "https://www.nzherald.co.nz/kahu/" "te ao māori"
+node /var/www/news/scrapers/nzherald.js "https://www.nzherald.co.nz/kahu/" "te ao maori"
 
 sed -i -e 's/\]\[/\,/g' /tmp/nzherald.json
 
@@ -71,4 +71,4 @@ python3 /var/www/news/scrapers/mlnews.py world
 python3 /var/www/news/scrapers/mlnews.py politics
 python3 /var/www/news/scrapers/mlnews.py technology
 python3 /var/www/news/scrapers/mlnews.py business
-python3 /var/www/news/scrapers/mlnews.py "te ao māori"
+python3 /var/www/news/scrapers/mlnews.py "te ao maori"

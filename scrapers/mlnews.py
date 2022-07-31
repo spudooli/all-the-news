@@ -43,11 +43,14 @@ connection = mysql.connector.connect(
 )
 
 # Some sections have new news items much slower than others
-if processsection == "business" or processsection == "technology" or processsection == "politics":
+if processsection == "business" or processsection == "technology" or processsection == "politics" or processsection == "world":
     newsday = datetime.today() - timedelta(days=3)
     newsday = f'{newsday.strftime("%Y-%m-%d")} 00:00:00'
 elif processsection == "te ao maori":
         newsday = datetime.today() - timedelta(days=10)
+        newsday = f'{newsday.strftime("%Y-%m-%d")} 00:00:00'
+elif processsection == "sport":
+        newsday = datetime.today() - timedelta(days=2)
         newsday = f'{newsday.strftime("%Y-%m-%d")} 00:00:00'
 else:
     today = date.today()
