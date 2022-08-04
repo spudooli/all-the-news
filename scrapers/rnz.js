@@ -28,10 +28,16 @@ void (async () => {
 
             try {
                 items.forEach((item) => {
+		   if (item.querySelector('span.o-kicker__time')) {
+                        var pubdate = item.querySelector('span.o-kicker__time').innerText;
+                    } else {
+                        var pubdate = '';
+                    };
+
                     results.push({
                         source: "RNZ",
                         scrapedate: Date(),
-                        pubdate: '',
+                        pubdate: pubdate,
                         section: section,
                         headline: item.querySelector('h3').innerText,
                         summary: item.querySelector('div.o-digest__summary').innerText,
