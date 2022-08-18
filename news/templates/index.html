@@ -13,6 +13,9 @@
                     
                     {% if loop.index == 1 %}
                     <div data-sort="{{ item.clustercount }}">
+                    {% if item.imageurl %}
+                    <img src="{{ item.imageurl }}" class="newsitemimg">
+                    {% endif %}
                     <div class="headline"><a href="{{ item.url }}">{{ item.headline}}</a></div>
                     <div class="short"> {{item.summary}} <div class="sourcename">{{item.source}} &nbsp;&nbsp;&nbsp; {{ item.pubdate|default('') }}</div></div>
                     {% else %}

@@ -51,19 +51,22 @@ def keywordextract(text):
 
 def processjson(file):
     with open(file) as f:
-        data = json.load(f)
-        for item in data:
-            sys.stdout.write(spinner())
-            sys.stdout.flush()
-            sys.stdout.write('\b')
-            urlhash = hashlib.md5(item['url'].encode())
-            text = item['headline'] + " " + item['summary']
-            keywords = keywordextract(text)
-            cursor.execute(
-                "INSERT IGNORE INTO news (source, section, headline, summary, url, urlhash, keywords, pubdate, imgurl) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                (item['source'], item['section'], item['headline'], item['summary'], item['url'], urlhash.hexdigest(), keywords, item['pubdate'], item['imgurl']) ),
-            )
-            connection.commit()
+        try:
+          data = json.load(f)
+          for item in data:
+              sys.stdout.write(spinner())
+              sys.stdout.flush()
+              sys.stdout.write('\b')
+              urlhash = hashlib.md5(item['url'].encode())
+              text = item['headline'] + " " + item['summary']
+              keywords = keywordextract(text)
+              cursor.execute(
+                  "INSERT IGNORE INTO news (source, section, headline, summary, url, urlhash, keywords, pubdate, imageurl) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                  (item['source'], item['section'], item['headline'], item['summary'], item['url'], urlhash.hexdigest(), keywords, item['pubdate'], item['imgurl']) )
+              connection.commit()
+        except Exception as e:
+            print(e)
+            pass
 
 
 processjson("/tmp/newshub.json")

@@ -10,6 +10,7 @@ node /var/www/news/scrapers/rnz.js "https://www.rnz.co.nz/news/sport" "sport"
 node /var/www/news/scrapers/rnz.js "https://www.rnz.co.nz/news/te-manu-korihi" "te ao maori"
 
 sed -i -e 's/\]\[/\,/g' /tmp/rnz.json
+sed -i -e 's/\]undefined\[/\,/g' /tmp/rnz.json
 
 rm /tmp/newshub.json
 
@@ -22,20 +23,21 @@ node /var/www/news/scrapers/newshub.js "https://www.newshub.co.nz/home/world.htm
 
 
 sed -i -e 's/\]\[/\,/g' /tmp/newshub.json
+sed -i -e 's/\]undefined\[/\,/g' /tmp/newshub.json
 
 
 rm /tmp/1news.json
 
 node /var/www/news/scrapers/1news.js "https://www.1news.co.nz/new-zealand/" "nz"
 node /var/www/news/scrapers/1news.js "https://www.1news.co.nz/world/" "world"
-# node 1news.js "https://www.1news.co.nz/sport/" "sport"
+# node /var/www/news/scrapers/1news.js "https://www.1news.co.nz/sport/" "sport"
 node /var/www/news/scrapers/1news.js "https://www.1news.co.nz/politics/" "politics"
 node /var/www/news/scrapers/1news.js "https://www.1news.co.nz/tags/business/" "business"
 node /var/www/news/scrapers/1news.js "https://www.1news.co.nz/sport/rugby/" "sport"
 node /var/www/news/scrapers/1news.js "https://www.1news.co.nz/tags/commonwealth-games/" "sport"
 
 sed -i -e 's/\]\[/\,/g' /tmp/1news.json
-
+sed -i -e 's/\]undefined\[/\,/g' /tmp/1news.json
 
 rm /tmp/stuff.json
 
@@ -45,11 +47,11 @@ node /var/www/news/scrapers/stuff.js "https://www.stuff.co.nz/business/money/" "
 node /var/www/news/scrapers/stuff.js "https://www.stuff.co.nz/world/more_headlines" "world"
 node /var/www/news/scrapers/stuff.js "https://www.stuff.co.nz/sport/more_headlines" "sport"
 node /var/www/news/scrapers/stuff.js "https://www.stuff.co.nz/technology/more_headlines" "technology"
-# node stuff.js "https://www.stuff.co.nz/pou-tiaki" "te ao māori"
+# node /var/www/news/scrapers/stuff.js "https://www.stuff.co.nz/pou-tiaki" "te ao maori"
 node /var/www/news/scrapers/stuff.js "https://www.stuff.co.nz/sport/commonwealth-games" "sport"
 
 sed -i -e 's/\]\[/\,/g' /tmp/stuff.json
-
+sed -i -e 's/\]undefined\[/\,/g' /tmp/stuff.json
 
 rm /tmp/nzherald.json
 
@@ -62,6 +64,7 @@ node /var/www/news/scrapers/nzherald.js "https://www.nzherald.co.nz/technology/"
 node /var/www/news/scrapers/nzherald.js "https://www.nzherald.co.nz/kahu/" "te ao maori"
 
 sed -i -e 's/\]\[/\,/g' /tmp/nzherald.json
+sed -i -e 's/\]undefined\[/\,/g' /tmp/nzherald.json
 
 python3 /var/www/news/scrapers/json-to-database.py
 

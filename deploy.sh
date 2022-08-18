@@ -13,7 +13,6 @@ cp -pr /home/dave/Sites/news/scrapers/* /var/www/news/scrapers/
 echo "Deploying the static assets..."
 
 cp -pr /home/dave/Sites/news/news/static/* /var/www/news/news/static/
-cp -p /home/dave/Sites/news/news/config.py /var/www/news/news/config.py
 
 echo "Deploying the templates..."
 cp -rp /home/dave/Sites/news/news/templates/* /var/www/news/news/templates/

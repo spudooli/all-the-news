@@ -10,7 +10,7 @@ void (async () => {
     try {
         // create a new browser instance
         const browser = await puppeteer.launch({
-            headless: true
+            headless: false
         });
 
         // create a page inside the browser
@@ -28,21 +28,41 @@ void (async () => {
 
             try {
                 items.forEach((item) => {
-		   if (item.querySelector('span.o-kicker__time')) {
+
+		            if (item.querySelector('span.o-kicker__time')) {
                         var pubdate = item.querySelector('span.o-kicker__time').innerText;
                     } else {
                         var pubdate = '';
                     };
-
+                    if (item.querySelector('img')) {
+                        var imgurl = item.querySelector('img').getAttribute("src");
+                    } else {
+                        var imgurl = '';
+                    };
+                    if (item.querySelector('h3')) {
+                        var headline = item.querySelector('h3').innerText;
+                    } else {
+                        var headline = '';
+                    };
+                    if (item.querySelector('div.o-digest__summary')) {
+                        var summary = item.querySelector('div.o-digest__summary').innerText;
+                    } else {
+                        var summary = '';
+                    };
+                    if (item.querySelector('a').getAttribute("href")) {
+                        var url = item.querySelector('a').getAttribute("href");
+                    } else {
+                        var url = '';
+                    };
                     results.push({
                         source: "RNZ",
                         scrapedate: Date(),
                         pubdate: pubdate,
                         section: section,
-                        headline: item.querySelector('h3').innerText,
-                        summary: item.querySelector('div.o-digest__summary').innerText,
-                        imgurl: item.querySelector('img').getAttribute("src"),
-                        url: 'https://www.rnz.co.nz' + item.querySelector('a').getAttribute("href")
+                        headline: headline,
+                        summary: summary,
+                        imgurl: imgurl,
+                        url: 'https://www.rnz.co.nz' + url
                     });
                 });
                 return results;
@@ -66,12 +86,12 @@ void (async () => {
         )
 
         // all done, close this browser
-        await browser.close();
+        //await browser.close();
     } catch (error) {
         // if something goes wrong
         // display the error message in console
         console.log(error);
-        browser.close();
+        //browser.close();
     }
 })()
 
