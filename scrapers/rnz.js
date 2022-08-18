@@ -10,7 +10,7 @@ void (async () => {
     try {
         // create a new browser instance
         const browser = await puppeteer.launch({
-            headless: false
+            headless: true
         });
 
         // create a page inside the browser
@@ -86,12 +86,12 @@ void (async () => {
         )
 
         // all done, close this browser
-        //await browser.close();
+        await browser.close();
     } catch (error) {
         // if something goes wrong
         // display the error message in console
         console.log(error);
-        //browser.close();
+        browser.close();
     }
 })()
 

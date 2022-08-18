@@ -31,8 +31,6 @@ void (async () => {
                     } else {
                         var pubdate = '';
                     };
-
-
                     results.push({
                         source: "1 News",
                         scrapedate: Date(),
