@@ -41,6 +41,7 @@ void (async () => {
                         section: section,
                         headline: item.querySelector('h3').innerText,
                         summary: item.querySelector('div.o-digest__summary').innerText,
+                        imgurl: item.querySelector('img').getAttribute("src"),
                         url: 'https://www.rnz.co.nz' + item.querySelector('a').getAttribute("href")
                     });
                 });

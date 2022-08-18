@@ -40,6 +40,7 @@ void (async () => {
                         pubdate: pubdate,
                         headline: item.querySelector('h3').innerText,
                         summary: item.querySelector('p.story-description').innerText,
+                        imgurl: '',
                         url: 'https://www.1news.co.nz' + item.querySelector('a').getAttribute("href")
                     });
                 });

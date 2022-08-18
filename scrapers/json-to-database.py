@@ -60,8 +60,8 @@ def processjson(file):
             text = item['headline'] + " " + item['summary']
             keywords = keywordextract(text)
             cursor.execute(
-                "INSERT IGNORE INTO news (source, section, headline, summary, url, urlhash, keywords, pubdate) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
-                (item['source'], item['section'], item['headline'], item['summary'], item['url'], urlhash.hexdigest(), keywords, item['pubdate']),
+                "INSERT IGNORE INTO news (source, section, headline, summary, url, urlhash, keywords, pubdate, imgurl) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                (item['source'], item['section'], item['headline'], item['summary'], item['url'], urlhash.hexdigest(), keywords, item['pubdate'], item['imgurl']) ),
             )
             connection.commit()
 
@@ -80,6 +80,10 @@ connection.commit()
 
 cursor.execute(
             "DELETE FROM `news` WHERE `summary` LIKE '%opinion%' OR `summary` LIKE '%OPINION%'", )
+connection.commit()
+
+cursor.execute(
+            "DELETE FROM `news` WHERE `summary` LIKE '%sponsored%' OR `summary` LIKE '%SPONSORED%'", )
 connection.commit()
 
 # def processrss(url, section):

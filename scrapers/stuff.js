@@ -39,6 +39,7 @@ void (async () => {
                         pubdate: '',
                         headline: item.querySelector('h3').innerText,
                         summary: item.querySelector('p.intro-content').innerText,
+                        imgurl: '',
                         url: 'https://www.stuff.co.nz' + item.querySelector('a').getAttribute("href")
                     });
                 });

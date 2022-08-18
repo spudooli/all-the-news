@@ -45,6 +45,7 @@ void (async () => {
                         section: section,
                         headline: headline,
                         summary: summary,
+                        imgurl: '',
                         url: item.querySelector('a').getAttribute("href")
                     });
                 });

@@ -62,6 +62,7 @@ void (async () => {
                         section: section,
                         headline: headline,
                         summary: summary,
+                        imgurl: '',
                         url: url
                     });
                 });
