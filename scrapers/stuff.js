@@ -41,6 +41,11 @@ void (async () => {
                     } else {
                         var summary = '';
                     };
+                    if (item.querySelector('img')) {
+                        var imgurl = item.querySelector('img').getAttribute("src");
+                    } else {
+                        var imgurl = '';
+                    };
                     results.push({
                         source: "Stuff",
                         scrapedate: Date(),
@@ -48,7 +53,7 @@ void (async () => {
                         pubdate: '',
                         headline: headline,
                         summary: summary,
-                        imgurl: '',
+                        imgurl: imgurl,
                         url: 'https://www.stuff.co.nz' + item.querySelector('a').getAttribute("href")
                     });
                 });
