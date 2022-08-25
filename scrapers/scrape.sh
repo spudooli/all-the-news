@@ -74,4 +74,4 @@ python3 /var/www/news/scrapers/mlnews.py world
 python3 /var/www/news/scrapers/mlnews.py politics
 python3 /var/www/news/scrapers/mlnews.py technology
 python3 /var/www/news/scrapers/mlnews.py business
-python3 /var/www/news/scrapers/mlnews.py "te ao maori"
+# python3 /var/www/news/scrapers/mlnews.py "te ao maori"
