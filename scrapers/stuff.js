@@ -53,7 +53,7 @@ void (async () => {
                         pubdate: '',
                         headline: headline,
                         summary: summary,
-                        imgurl: imgurl,
+                        imgurl: '',
                         url: 'https://www.stuff.co.nz' + item.querySelector('a').getAttribute("href")
                     });
                 });

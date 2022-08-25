@@ -49,7 +49,6 @@ node /var/www/news/scrapers/stuff.js "https://www.stuff.co.nz/world/more_headlin
 node /var/www/news/scrapers/stuff.js "https://www.stuff.co.nz/sport/more_headlines" "sport"
 node /var/www/news/scrapers/stuff.js "https://www.stuff.co.nz/technology/more_headlines" "technology"
 node /var/www/news/scrapers/stuff.js "https://www.stuff.co.nz/pou-tiaki" "te ao maori"
-node /var/www/news/scrapers/stuff.js "https://www.stuff.co.nz/sport/commonwealth-games" "sport"
 
 sed -i -e 's/\]\[/\,/g' /tmp/stuff.json
 sed -i -e 's/\]undefined\[/\,/g' /tmp/stuff.json
