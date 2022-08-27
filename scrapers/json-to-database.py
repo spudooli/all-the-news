@@ -74,6 +74,7 @@ processjson("/tmp/rnz.json")
 processjson("/tmp/1news.json")
 processjson("/tmp/stuff.json")
 processjson("/tmp/nzherald.json")
+processjson("/tmp/odt.json")
 
 # Delete newsundefinedundefinedundefinedundefinei items that are opinion
 print("Deleting the opinion")

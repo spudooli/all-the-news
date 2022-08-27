@@ -66,6 +66,15 @@ node /var/www/news/scrapers/nzherald.js "https://www.nzherald.co.nz/technology/"
 sed -i -e 's/\]\[/\,/g' /tmp/nzherald.json
 sed -i -e 's/\]undefined\[/\,/g' /tmp/nzherald.json
 
+
+rm /tmp/odt.json
+node /var/www/news/scrapers/odt.js "https://www.odt.co.nz/news/national" "nz"
+node /var/www/news/scrapers/odt.js "https://www.odt.co.nz/business" "business"
+node /var/www/news/scrapers/odt.js "https://www.odt.co.nz/news/international" "world"
+sed -i -e 's/\]\[/\,/g' /tmp/odt.json
+sed -i -e 's/\]undefined\[/\,/g' /tmp/odt.json
+
+
 python3 /var/www/news/scrapers/json-to-database.py
 
 python3 /var/www/news/scrapers/mlnews.py nz
