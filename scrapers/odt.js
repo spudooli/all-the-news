@@ -32,10 +32,14 @@ void (async () => {
                     if (item.querySelector('h2')) {
                         headline = item.querySelector('h2').innerText;
                     }
-                    if (item.querySelector('div.field-item')) {
-                        summary = item.querySelector('div.field-items').innerText;
+                    if (item.querySelector('div.field.field-name-body')) {
+                        summary = item.querySelector('div.field.field-name-body').innerText;
                     } else {
-                        summary = '';
+                        if (item.querySelector('div.summary')) {
+                            summary = item.querySelector('div.summary').innerText;
+                        } else {
+                            summary = '';
+                        }
                     }
                     
                     results.push({
