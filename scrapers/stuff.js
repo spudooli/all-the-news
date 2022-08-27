@@ -10,13 +10,13 @@ void (async () => {
     try {
         // create a new browser instance
         const browser = await puppeteer.launch({
-            headless: true,            
+            headless: true,
             defaultViewport: {
                 width: 1280,
                 height: 720
             }
         });
-        
+
         // create a page inside the browser
         const page = await browser.newPage();
         await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36');
@@ -24,7 +24,7 @@ void (async () => {
         await page.goto(url, {
             waitUntil: 'load'
         });
-        
+
         let urls = await page.evaluate((section) => {
             let results = [];
             let items = document.querySelectorAll('div.display-asset');

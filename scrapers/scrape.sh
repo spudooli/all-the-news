@@ -7,7 +7,7 @@ node /var/www/news/scrapers/rnz.js "https://www.rnz.co.nz/news/world" "world"
 node /var/www/news/scrapers/rnz.js "https://www.rnz.co.nz/news/political" "politics"
 node /var/www/news/scrapers/rnz.js "https://www.rnz.co.nz/news/business" "business"
 node /var/www/news/scrapers/rnz.js "https://www.rnz.co.nz/news/sport" "sport"
-node /var/www/news/scrapers/rnz.js "https://www.rnz.co.nz/news/te-manu-korihi" "te ao maori"
+# node /var/www/news/scrapers/rnz.js "https://www.rnz.co.nz/news/te-manu-korihi" "te ao maori"
 
 sed -i -e 's/\]\[/\,/g' /tmp/rnz.json
 sed -i -e 's/\]undefined\[/\,/g' /tmp/rnz.json
@@ -48,7 +48,7 @@ node /var/www/news/scrapers/stuff.js "https://www.stuff.co.nz/business/money/" "
 node /var/www/news/scrapers/stuff.js "https://www.stuff.co.nz/world/more_headlines" "world"
 node /var/www/news/scrapers/stuff.js "https://www.stuff.co.nz/sport/more_headlines" "sport"
 node /var/www/news/scrapers/stuff.js "https://www.stuff.co.nz/technology/more_headlines" "technology"
-node /var/www/news/scrapers/stuff.js "https://www.stuff.co.nz/pou-tiaki" "te ao maori"
+#node /var/www/news/scrapers/stuff.js "https://www.stuff.co.nz/pou-tiaki" "te ao maori"
 
 sed -i -e 's/\]\[/\,/g' /tmp/stuff.json
 sed -i -e 's/\]undefined\[/\,/g' /tmp/stuff.json
@@ -61,7 +61,7 @@ node /var/www/news/scrapers/nzherald.js "https://www.nzherald.co.nz/world/" "wor
 node /var/www/news/scrapers/nzherald.js "https://www.nzherald.co.nz/sport/" "sport"
 node /var/www/news/scrapers/nzherald.js "https://www.nzherald.co.nz/nz/" "nz"
 node /var/www/news/scrapers/nzherald.js "https://www.nzherald.co.nz/technology/" "technology"
-node /var/www/news/scrapers/nzherald.js "https://www.nzherald.co.nz/kahu/" "te ao maori"
+#node /var/www/news/scrapers/nzherald.js "https://www.nzherald.co.nz/kahu/" "te ao maori"
 
 sed -i -e 's/\]\[/\,/g' /tmp/nzherald.json
 sed -i -e 's/\]undefined\[/\,/g' /tmp/nzherald.json
