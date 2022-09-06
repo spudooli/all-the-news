@@ -18,7 +18,6 @@ node /var/www/news/scrapers/newshub.js "https://www.newshub.co.nz/home/new-zeala
 node /var/www/news/scrapers/newshub.js "https://www.newshub.co.nz/home/politics.html" "politics"
 node /var/www/news/scrapers/newshub.js "https://www.newshub.co.nz/home/sport.html" "sport"
 node /var/www/news/scrapers/newshub.js "https://www.newshub.co.nz/home/money.html" "business"
-node /var/www/news/scrapers/newshub.js "https://www.newshub.co.nz/home/technology.html" "technology"
 node /var/www/news/scrapers/newshub.js "https://www.newshub.co.nz/home/world.html" "world"
 
 
@@ -47,7 +46,6 @@ node /var/www/news/scrapers/stuff.js "https://www.stuff.co.nz/business/more_head
 node /var/www/news/scrapers/stuff.js "https://www.stuff.co.nz/business/money/" "business"
 node /var/www/news/scrapers/stuff.js "https://www.stuff.co.nz/world/more_headlines" "world"
 node /var/www/news/scrapers/stuff.js "https://www.stuff.co.nz/sport/more_headlines" "sport"
-node /var/www/news/scrapers/stuff.js "https://www.stuff.co.nz/technology/more_headlines" "technology"
 #node /var/www/news/scrapers/stuff.js "https://www.stuff.co.nz/pou-tiaki" "te ao maori"
 
 sed -i -e 's/\]\[/\,/g' /tmp/stuff.json
@@ -60,7 +58,6 @@ node /var/www/news/scrapers/nzherald.js "https://www.nzherald.co.nz/politics/" "
 node /var/www/news/scrapers/nzherald.js "https://www.nzherald.co.nz/world/" "world"
 node /var/www/news/scrapers/nzherald.js "https://www.nzherald.co.nz/sport/" "sport"
 node /var/www/news/scrapers/nzherald.js "https://www.nzherald.co.nz/nz/" "nz"
-node /var/www/news/scrapers/nzherald.js "https://www.nzherald.co.nz/technology/" "technology"
 #node /var/www/news/scrapers/nzherald.js "https://www.nzherald.co.nz/kahu/" "te ao maori"
 
 sed -i -e 's/\]\[/\,/g' /tmp/nzherald.json
