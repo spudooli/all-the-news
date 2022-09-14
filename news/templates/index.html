@@ -9,7 +9,7 @@
             <h2 class="section">{% block title %} {{ section }} {% endblock %}</h2>
         
             {% for clusterid, items in item1 | sort(attribute='clustercount') | groupby("clusterid")  %}
-            {% for item in items  %}
+            {% for item in items | sort(attribute='clustercount') %}
                     
                     {% if loop.index == 1 %}
                     <div data-sort="{{ item.clustercount }}">
