@@ -54,6 +54,8 @@ void (async () => {
                 // if something goes wrong
                 // display the error message in console
                 console.log(error);
+		    browser.close();
+
             }
         }, section)
 

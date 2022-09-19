@@ -76,14 +76,18 @@ processjson("/tmp/stuff.json")
 processjson("/tmp/nzherald.json")
 processjson("/tmp/odt.json")
 
-# Delete newsundefinedundefinedundefinedundefinei items that are opinion
+# Delete news items that are opinion or Sponsored
 print("Deleting the opinion")
 cursor.execute(
-            "DELETE FROM `news` WHERE `headline` LIKE '%opinion%' OR `summary` LIKE '%OPINION%'", )
+            "DELETE FROM `news` WHERE `headline` LIKE '%opinion%' OR `headline` LIKE '%OPINION%'", )
 connection.commit()
 
 cursor.execute(
             "DELETE FROM `news` WHERE `summary` LIKE '%opinion%' OR `summary` LIKE '%OPINION%'", )
+connection.commit()
+
+cursor.execute(
+            "DELETE FROM `news` WHERE `headline` LIKE '%sponsored%' OR `headline` LIKE '%SPONSORED%'", )
 connection.commit()
 
 cursor.execute(
