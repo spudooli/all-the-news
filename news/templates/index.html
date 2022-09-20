@@ -16,11 +16,11 @@
                     {% if item.imageurl %}
                     <img src="{{ item.imageurl }}" class="newsitemimg">
                     {% endif %}
-                    <div class="headline"><a href="{{ item.url }}">{{ item.headline}}</a></div>
-                    <div class="short"> {{item.summary}} <div class="sourcename">{{item.source}} &nbsp;&nbsp;&nbsp; {{ item.pubdate|default('') }}</div></div>
+                    <div class="headline"><a href="{{ item.url }}">{{ item.headline}}</a>{% if item.new == 1 %}<div class="newnews"> New</div> {% endif %}</div>
+                    <div class="short"> {{item.summary}} <div class="sourcename"> {{item.source}} &nbsp;&nbsp;&nbsp; {{ item.pubdate|default('') }}</div></div>
                     {% else %}
                     <div class="secondaryitems">                  
-                    <div class="headline-other"><a href="{{ item.url }}">{{ item.headline}}</a></div>
+                    <div class="headline-other"><a href="{{ item.url }}">{{ item.headline}}</a></div>{% if item.new == "1" %}<div class="newnews">New</div> {% endif %}
                     <div class="short"> {{item.summary}}  <div class="sourcename">{{item.source}}</div></div>
                     </div>  
                     {% endif %}

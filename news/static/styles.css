@@ -54,6 +54,7 @@ margin-left: 300px;
 .sourcename {
   position: relative;
   font-size: 10px;
+  margin-left: 10px;
   text-transform: uppercase;
   letter-spacing: 2px;
   font-weight: 500;
@@ -98,4 +99,14 @@ margin-top: 80px;
   max-width:200px;
   height: auto;
 
+}
+
+.newnews {
+  font-size: 10px;
+  margin-left: 10px;
+  color: red;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 500;
+  display: inline-block;
 }

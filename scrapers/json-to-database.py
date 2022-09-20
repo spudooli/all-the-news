@@ -18,6 +18,11 @@ connection = mysql.connector.connect(
 
 cursor = connection.cursor()
 
+# Set all news items to not be new
+mysql_insert_query = "update news set new = 0"
+cursor.execute(mysql_insert_query,)
+connection.commit()
+
 spin = 1
 def spinner():
   global spin
@@ -61,8 +66,8 @@ def processjson(file):
               text = item['headline'] + " " + item['summary']
               keywords = keywordextract(text)
               cursor.execute(
-                  "INSERT IGNORE INTO news (source, section, headline, summary, url, urlhash, keywords, pubdate, imageurl) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                  (item['source'], item['section'], item['headline'], item['summary'], item['url'], urlhash.hexdigest(), keywords, item['pubdate'], item['imgurl']) )
+                  "INSERT IGNORE INTO news (source, section, headline, summary, url, urlhash, keywords, pubdate, imageurl, new) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                  (item['source'], item['section'], item['headline'], item['summary'], item['url'], urlhash.hexdigest(), keywords, item['pubdate'], item['imgurl'], "1") )
               connection.commit()
         except Exception as e:
             print(e)

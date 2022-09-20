@@ -18,7 +18,7 @@ def getthenewsagain(section):
         today = date.today()
         newsday = f'{today.strftime("%Y-%m-%d")} 00:00:00'
     cursor = db.mysql.connection.cursor()
-    cursor.execute("SELECT id, headline, summary, source, url, clusterid, section, scrapedate, pubdate, featured, clustercount, imageurl FROM news where clusterid IS NOT NULL and section LIKE %s and scrapedate > %s  order by clustercount DESC, clusterid", (section, newsday))
+    cursor.execute("SELECT id, headline, summary, source, url, clusterid, section, scrapedate, pubdate, featured, clustercount, imageurl, new FROM news where clusterid IS NOT NULL and section LIKE %s and scrapedate > %s  order by clustercount DESC, clusterid", (section, newsday))
     newsitems = cursor.fetchall()
     desc = cursor.description
     column_names = [col[0] for col in desc]
