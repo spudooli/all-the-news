@@ -66,7 +66,7 @@ def processjson(file):
               text = item['headline'] + " " + item['summary']
               keywords = keywordextract(text)
               cursor.execute(
-                  "INSERT IGNORE INTO news (source, section, headline, summary, url, urlhash, keywords, pubdate, imageurl, new) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                  "INSERT IGNORE INTO news (source, section, headline, summary, url, urlhash, keywords, pubdate, imageurl, new) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
                   (item['source'], item['section'], item['headline'], item['summary'], item['url'], urlhash.hexdigest(), keywords, item['pubdate'], item['imgurl'], "1") )
               connection.commit()
         except Exception as e:
