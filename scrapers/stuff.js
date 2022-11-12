@@ -10,7 +10,7 @@ void (async () => {
     try {
         // create a new browser instance
         const browser = await puppeteer.launch({
-            headless: true,
+            headless: false,
             defaultViewport: {
                 width: 1280,
                 height: 720
@@ -20,10 +20,17 @@ void (async () => {
         // create a page inside the browser
         const page = await browser.newPage();
         await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36');
+        
         // navigate to a website
-        await page.goto(url, {
-            waitUntil: 'load'
-        });
+        try {
+            await page.goto(url, {
+                waitUntil: 'load'
+            });  
+        } catch (error) {
+            console.log(error);
+            browser.close();  
+            process.exit();
+        }
 
         let urls = await page.evaluate((section) => {
             let results = [];
@@ -59,10 +66,8 @@ void (async () => {
                 });
                 return results;
             } catch (error) {
-                // if something goes wrong
-                // display the error message in console
                 console.log(error);
-	    browser.close();
+                browser.close();
 
             }
         }, section)
@@ -82,8 +87,6 @@ void (async () => {
         // all done, close this browser
         await browser.close();
     } catch (error) {
-        // if something goes wrong
-        // display the error message in console
         console.log(error);
         browser.close();
     }

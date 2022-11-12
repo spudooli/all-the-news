@@ -17,9 +17,16 @@ void (async () => {
         await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36');
 
         // navigate to a website
-        await page.goto(url, {
-            waitUntil: 'load'
-        });
+        try {
+            await page.goto(url, {
+                waitUntil: 'load'
+            });  
+        } catch (error) {
+            console.log(error);
+            browser.close();  
+            process.exit();
+        }
+        
         let urls = await page.evaluate((section) => {
             let results = [];
             let items = document.querySelectorAll('div.c-NewsTile');
