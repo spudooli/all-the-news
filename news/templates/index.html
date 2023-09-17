@@ -8,7 +8,7 @@
         <div class="col-sm-9">
             <h2 class="section">{% block title %} {{ section }} {% endblock %}</h2>
         
-            {% for clusterid, items in item1 | sort(attribute='clustercount') | groupby("clusterid")  %}
+            {% for clusterid, items in item1 | sort(attribute='clustercount,clusterid',reverse=True) | groupby("clusterid")  %}
             {% for item in items | sort(attribute='clustercount') %}
                     
                     {% if loop.index == 1 %}

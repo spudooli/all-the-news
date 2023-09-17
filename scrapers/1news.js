@@ -29,12 +29,12 @@ void (async () => {
         
         let urls = await page.evaluate((section) => {
             let results = [];
-            let items = document.querySelectorAll('div.card');
+            let items = document.querySelectorAll('div.storyItemContainer');
 
             try {
                 items.forEach((item) => {
-                    if (item.querySelector('time')) {
-                        var pubdate = item.querySelector('time').innerText;
+                    if (item.querySelector('p.testTimeStamp')) {
+                        var pubdate = item.querySelector('p.testTimeStamp').innerText;
                     } else {
                         var pubdate = '';
                     };
@@ -44,7 +44,7 @@ void (async () => {
                         section: section,
                         pubdate: pubdate,
                         headline: item.querySelector('h3').innerText,
-                        summary: item.querySelector('p.story-description').innerText,
+                        summary: item.querySelector('p.description').innerText,
                         imgurl: item.querySelector('img').getAttribute("src"),
                         url: 'https://www.1news.co.nz' + item.querySelector('a').getAttribute("href")
                     });

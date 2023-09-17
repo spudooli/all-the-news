@@ -4,13 +4,12 @@ const puppeteer = require('puppeteer');
 const url = process.argv[2];
 const section = process.argv[3];
 
-// this wrapper means immediately execute this code
 void (async () => {
-    // wrapper to catch errors
+
     try {
-        // create a new browser instance
+
         const browser = await puppeteer.launch({
-            headless: false,
+            headless: true,
             defaultViewport: {
                 width: 1280,
                 height: 720
@@ -19,12 +18,12 @@ void (async () => {
 
         // create a page inside the browser
         const page = await browser.newPage();
-        await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36');
+        await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36');
         
         // navigate to a website
         try {
             await page.goto(url, {
-                waitUntil: 'load'
+                waitUntil: 'domcontentloaded'
             });  
         } catch (error) {
             console.log(error);

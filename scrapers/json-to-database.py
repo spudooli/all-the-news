@@ -5,6 +5,8 @@ import yake
 import feedparser
 import sys
 import ssl
+import requests
+from bs4 import BeautifulSoup
 
 if hasattr(ssl, '_create_unverified_context'):
     ssl._create_default_https_context = ssl._create_unverified_context
@@ -17,6 +19,25 @@ connection = mysql.connector.connect(
 )
 
 cursor = connection.cursor()
+
+
+def get_og_image(url):
+    try:
+        headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36'}
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+        soup = BeautifulSoup(response.content, 'html.parser')
+        
+        og_image_tag = soup.find('meta', attrs={'property': 'og:image'})
+        
+        if og_image_tag:
+            og_image_url = og_image_tag.get('content')
+            return og_image_url
+        else:
+            return None
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None
 
 # Set all news items to not be new
 mysql_insert_query = "update news set new = 0"
@@ -65,6 +86,11 @@ def processjson(file):
               urlhash = hashlib.md5(item['url'].encode())
               text = item['headline'] + " " + item['summary']
               keywords = keywordextract(text)
+
+              if item['source'] == "Stuff":
+                  print("...................................................................................................")
+                  item['imgurl'] = get_og_image(item['url'])
+              
               cursor.execute(
                   "INSERT IGNORE INTO news (source, section, headline, summary, url, urlhash, keywords, pubdate, imageurl, new) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
                   (item['source'], item['section'], item['headline'], item['summary'], item['url'], urlhash.hexdigest(), keywords, item['pubdate'], item['imgurl'], "1") )
@@ -98,6 +124,16 @@ connection.commit()
 cursor.execute(
             "DELETE FROM `news` WHERE `summary` LIKE '%sponsored%' OR `summary` LIKE '%SPONSORED%'", )
 connection.commit()
+
+cursor.execute(
+            "DELETE FROM `news` WHERE `headline` LIKE '%Lotto%'", )
+connection.commit()
+
+cursor.execute(
+            "DELETE FROM `news` WHERE `summary` LIKE '%Lotto%'", )
+connection.commit()
+
+
 
 # def processrss(url, section):
 #     feed = feedparser.parse(url)
