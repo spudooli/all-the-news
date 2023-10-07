@@ -33,7 +33,7 @@ node /var/www/news/scrapers/1news.js "https://www.1news.co.nz/world/" "world"
 node /var/www/news/scrapers/1news.js "https://www.1news.co.nz/politics/" "politics"
 node /var/www/news/scrapers/1news.js "https://www.1news.co.nz/tags/business/" "business"
 node /var/www/news/scrapers/1news.js "https://www.1news.co.nz/sport/rugby/" "sport"
-node /var/www/news/scrapers/1news.js "https://www.1news.co.nz/sport/cricket/" "sport"
+# node /var/www/news/scrapers/1news.js "https://www.1news.co.nz/sport/cricket/" "sport"
 node /var/www/news/scrapers/1news.js "https://www.1news.co.nz/sport/motorsport/"
 
 sed -i -e 's/\]\[/\,/g' /tmp/1news.json
