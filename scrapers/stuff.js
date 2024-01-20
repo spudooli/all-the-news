@@ -18,12 +18,12 @@ void (async () => {
 
         // create a page inside the browser
         const page = await browser.newPage();
-        await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36');
+        await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36');
         
         // navigate to a website
         try {
             await page.goto(url, {
-                waitUntil: 'domcontentloaded'
+                waitUntil: 'networkidle0'
             });  
         } catch (error) {
             console.log(error);
@@ -33,17 +33,17 @@ void (async () => {
 
         let urls = await page.evaluate((section) => {
             let results = [];
-            let items = document.querySelectorAll('div.display-asset');
+            let items = document.querySelectorAll('a.stuff-story-teaser-card');
 
             try {
                 items.forEach((item) => {
-                    if (item.querySelector('h3')) {
-                        var headline = item.querySelector('h3').innerText;
+                    if (item.querySelector('h5')) {
+                        var headline = item.querySelector('h5').innerText;
                     } else {
                         var headline = '';
                     };
-                    if (item.querySelector('p.intro-content')) {
-                        var summary = item.querySelector('p.intro-content').innerText;
+                    if (item.querySelector('p')) {
+                        var summary = item.querySelector('p').innerText;
                     } else {
                         var summary = '';
                     };
@@ -52,15 +52,21 @@ void (async () => {
                     } else {
                         var imgurl = '';
                     };
+                    if (item.querySelector('time')) {
+                        var pubdate = item.querySelector('time').innerText;
+                    } else {
+                        var pubdate = '';
+                    };
                     results.push({
                         source: "Stuff",
                         scrapedate: Date(),
                         section: section,
-                        pubdate: '',
+                        pubdate: pubdate,
                         headline: headline,
                         summary: summary,
-                        imgurl: '',
-                        url: 'https://www.stuff.co.nz' + item.querySelector('a').getAttribute("href")
+                        imgurl: imgurl,
+                        //url: 'https://www.stuff.co.nz' + item.querySelector('a').getAttribute("href")
+                        url: item.href
                     });
                 });
                 return results;
@@ -87,7 +93,7 @@ void (async () => {
         await browser.close();
     } catch (error) {
         console.log(error);
-        browser.close();
+       browser.close();
     }
 })()
 

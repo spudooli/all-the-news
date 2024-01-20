@@ -41,12 +41,10 @@ sed -i -e 's/\]undefined\[/\,/g' /tmp/1news.json
 
 rm /tmp/stuff.json
 
-node /var/www/news/scrapers/stuff.js "https://www.stuff.co.nz/national/more_headlines" "nz"
-node /var/www/news/scrapers/stuff.js "https://www.stuff.co.nz/business/more_headlines" "business"
-node /var/www/news/scrapers/stuff.js "https://www.stuff.co.nz/business/money/" "business"
-node /var/www/news/scrapers/stuff.js "https://www.stuff.co.nz/world/more_headlines" "world"
-node /var/www/news/scrapers/stuff.js "https://www.stuff.co.nz/sport/more_headlines" "sport"
-#node /var/www/news/scrapers/stuff.js "https://www.stuff.co.nz/pou-tiaki" "te ao maori"
+node /var/www/news/scrapers/stuff.js "https://www.stuff.co.nz/nz-news" "nz"
+node /var/www/news/scrapers/stuff.js "https://www.stuff.co.nz/business" "business"
+node /var/www/news/scrapers/stuff.js "https://www.stuff.co.nz/world-news" "world"
+node /var/www/news/scrapers/stuff.js "https://www.stuff.co.nz/sport" "sport"
 
 sed -i -e 's/\]\[/\,/g' /tmp/stuff.json
 sed -i -e 's/\]undefined\[/\,/g' /tmp/stuff.json

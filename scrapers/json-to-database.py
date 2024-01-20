@@ -87,9 +87,9 @@ def processjson(file):
               text = item['headline'] + " " + item['summary']
               keywords = keywordextract(text)
 
-              if item['source'] == "Stuff":
-                  print("...................................................................................................")
-                  item['imgurl'] = get_og_image(item['url'])
+            #   if item['source'] == "Stuff":
+            #       print("...................................................................................................")
+            #       item['imgurl'] = get_og_image(item['url'])
               
               cursor.execute(
                   "INSERT IGNORE INTO news (source, section, headline, summary, url, urlhash, keywords, pubdate, imageurl, new) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
