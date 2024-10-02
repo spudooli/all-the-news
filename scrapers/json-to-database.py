@@ -100,7 +100,6 @@ def processjson(file):
             pass
 
 
-processjson("/tmp/newshub.json")
 processjson("/tmp/rnz.json")
 processjson("/tmp/1news.json")
 processjson("/tmp/stuff.json")

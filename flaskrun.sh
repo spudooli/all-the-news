@@ -1,1 +1,1 @@
-flask --app news --debug run --port 5000
+flask --app news --debug run --port 5002

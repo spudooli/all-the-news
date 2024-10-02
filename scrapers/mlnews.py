@@ -69,7 +69,10 @@ source= []
 newsitemid=[]
 ct = -1
 for item in items:
-    newsitem = item[1] + " " + item[2] 
+    if item[2] == None:
+        newsitem = item[1] + " " + item[5]
+    else:
+        newsitem = item[1] + " " + item[2]
     #working on function to constrain dates to specified time range
     #if e['published'] <= "Fri, 04 Apr 2014":
     words = nltk.wordpunct_tokenize((newsitem))
@@ -155,7 +158,7 @@ for i in range(0,n):
 ##|  Hierarchically Cluster mat
 ##`----
 
-t = 1
+t = 1.15
 Z = linkage(mat, 'single')
 #dendrogram(Z, color_threshold=t)
 

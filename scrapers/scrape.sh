@@ -12,17 +12,17 @@ node /var/www/news/scrapers/rnz.js "https://www.rnz.co.nz/news/sport" "sport"
 sed -i -e 's/\]\[/\,/g' /tmp/rnz.json
 sed -i -e 's/\]undefined\[/\,/g' /tmp/rnz.json
 
-rm /tmp/newshub.json
+#rm /tmp/newshub.json
 
-node /var/www/news/scrapers/newshub.js "https://www.newshub.co.nz/home/new-zealand.html" "nz"
-node /var/www/news/scrapers/newshub.js "https://www.newshub.co.nz/home/politics.html" "politics"
-node /var/www/news/scrapers/newshub.js "https://www.newshub.co.nz/home/sport.html" "sport"
-node /var/www/news/scrapers/newshub.js "https://www.newshub.co.nz/home/money.html" "business"
-node /var/www/news/scrapers/newshub.js "https://www.newshub.co.nz/home/world.html" "world"
+#node /var/www/news/scrapers/newshub.js "https://www.newshub.co.nz/home/new-zealand.html" "nz"
+#node /var/www/news/scrapers/newshub.js "https://www.newshub.co.nz/home/politics.html" "politics"
+#node /var/www/news/scrapers/newshub.js "https://www.newshub.co.nz/home/sport.html" "sport"
+#node /var/www/news/scrapers/newshub.js "https://www.newshub.co.nz/home/money.html" "business"
+#node /var/www/news/scrapers/newshub.js "https://www.newshub.co.nz/home/world.html" "world"
 
 
-sed -i -e 's/\]\[/\,/g' /tmp/newshub.json
-sed -i -e 's/\]undefined\[/\,/g' /tmp/newshub.json
+#sed -i -e 's/\]\[/\,/g' /tmp/newshub.json
+#sed -i -e 's/\]undefined\[/\,/g' /tmp/newshub.json
 
 
 rm /tmp/1news.json

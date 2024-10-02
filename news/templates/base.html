@@ -22,9 +22,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <title>{% block title %}{% endblock %} - Spudooli News</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="A news aggregator that tries to deliver news without the mental load of visiting regular news sites. No Opinion pieces here either." />
+  <meta name="description" content="A news aggregator that tries to deliver news without the mental load of visiting regular news sites. No ads, no opinion pieces here either." />
   <meta property="og:title" content="Good Enough News" />
-  <meta property="og:description" content="A news aggregator that tries to deliver news without the mental load of visiting regular news sites. No Opinion pieces here either." />
+  <meta property="og:description" content="A news aggregator that tries to deliver news without the mental load of visiting regular news sites. No ads, no Ooinion pieces here either." />
   <meta property="og:image" content="{% block ogimage %}{% endblock %}" />
   <meta property="og:url" content="https://news.spudooli.com" />
   <meta property="og:type" content="website" />
@@ -38,7 +38,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 </head>
 <body>
-
+  <div id="top-bar"></div>
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NCR4ZPV"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -53,11 +53,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <span class="navbar-toggler-icon"></span>
           </button>
          
-          <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+          <div class="collapse navbar-collapse">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               {% for href, id, caption in navigation_bar %}
-                  <li {% if id==active_page %} class="nav-item current" {% else %} class="nav-item" {% endif %}><a href="{{ href|e }}"  class="nav-link">{{ caption|e }}</a>
-                  </li>
+                  <li {% if id==active_page %} class="nav-item current" {% else %} class="nav-item" {% endif %}><a href="{{ href|e }}"  class="nav-link">{{ caption|e }}</a></li>
                   {% endfor %}
             </ul>
             
@@ -71,15 +70,54 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 {% for message in get_flashed_messages() %}
 <div class="flash">{{ message }}</div>
 {% endfor %}
-{% block content %}{% endblock %}
+<div class="container mt-5">
+  <div class="row">
+      <div class="col-sm-9">
+
+
+{% block content %}
+
+<!-- Content goes here-->
+
+
+{% endblock %}
+
+
+</div>
+
+<!-- Start right column -->
+<div class="col-sm-3">
+    
+    <div class="sidebar">
+      <div class="liveupdates" id="liveupdates">&nbsp;</div>
+
+        <h4>Some Trending Things</h4>
+
+        {% for category, feature in featured | groupby("category")  %}
+        <br>
+        {{ category}}
+        <br>
+        {% for thing in feature  %}
+        <ul>
+          <li><a href="/trending/{{thing.url }}">{{ thing.title }}</a></li>
+       </ul>
+       {% endfor %}
+       {% endfor %}
+
+    </div>  
+
+  <div class="lastupdated">News last updated:<br>{{ lastupdateddate.strftime('%A, %-d %B, %Y %-H:%M') }}</div>
+  <div class="copyright">Another Spudooli Project<br><br>© Copyright {{ now.year }} <br> <a href="http://www.spudooli.com">Spudooli Investments Ltd</a></div>
+</div>
+<!-- End right column -->
+
+</div>
 
 <footer class="footer mt-auto py-3">
   <div class="container">
-    
   </div>
 </footer>
-<!-- <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script> -->
+
 </body>
 
 </html>

@@ -14,12 +14,12 @@ void (async () => {
 
         // create a page inside the browser
         const page = await browser.newPage();
-        await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36');
+        await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36');
 
         // navigate to a website
         try {
             await page.goto(url, {
-                waitUntil: 'load'
+                waitUntil: 'networkidle2'
             });  
         } catch (error) {
             console.log(error);
@@ -45,7 +45,8 @@ void (async () => {
                         pubdate: pubdate,
                         headline: item.querySelector('h3').innerText,
                         summary: item.querySelector('p.description').innerText,
-                        imgurl: item.querySelector('img').getAttribute("src"),
+                        imgurl: "",
+                        // imgurl: item.querySelector('img').getAttribute("src"),
                         url: 'https://www.1news.co.nz' + item.querySelector('a').getAttribute("href")
                     });
                 });

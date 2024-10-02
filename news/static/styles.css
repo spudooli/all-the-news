@@ -26,11 +26,13 @@ a:visited {
 
 .navbar-brand {
   font-size: 32px;
+
 }
 
 .headline {
   font-size: 22px;
   font-style: bold;
+
 }
 
 .headline-other {
@@ -90,27 +92,31 @@ margin-left: 300px;
 }
 
 .liveupdates {
-
   padding: 20px;
 }
 
 .lastupdated { 
   margin-top: 20px;
-  font-size: 10px;
+  padding: 20px;
+  font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 2px;
   font-weight: 500;
 }
 
 .copyright {
-margin-top: 80px;
+margin-top: 280px;
+padding: 20px;
+font-size: 12px;
+
+
 }
 
 .newsitemimg {
   float: right;
   margin-left: 10px;
   margin-bottom: 10px;
-  max-width:300px;
+  max-width:250px;
   height: auto;
 
 }
@@ -123,4 +129,9 @@ margin-top: 80px;
   letter-spacing: 2px;
   font-weight: 500;
   display: inline-block;
+}
+
+#top-bar {
+  height: 3px;
+  background-color: #e45711; 
 }
