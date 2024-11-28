@@ -60,6 +60,15 @@ cursor = connection.cursor()
 mysqlquery = "SELECT id, headline, summary, source, url, keywords FROM news where section = %s and scrapedate > %s "
 cursor.execute(mysqlquery, (processsection, newsday))
 items = cursor.fetchall()
+
+# write items to a dfile in /tmp
+dfile = open('/tmp/newsitems', 'w')
+for item in items:
+    dfile.write(str(item))
+    dfile.write("\n")
+dfile.close()
+
+
 cursor.close()
 
 corpus = []

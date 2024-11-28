@@ -12,29 +12,14 @@ node /var/www/news/scrapers/rnz.js "https://www.rnz.co.nz/news/sport" "sport"
 sed -i -e 's/\]\[/\,/g' /tmp/rnz.json
 sed -i -e 's/\]undefined\[/\,/g' /tmp/rnz.json
 
-#rm /tmp/newshub.json
-
-#node /var/www/news/scrapers/newshub.js "https://www.newshub.co.nz/home/new-zealand.html" "nz"
-#node /var/www/news/scrapers/newshub.js "https://www.newshub.co.nz/home/politics.html" "politics"
-#node /var/www/news/scrapers/newshub.js "https://www.newshub.co.nz/home/sport.html" "sport"
-#node /var/www/news/scrapers/newshub.js "https://www.newshub.co.nz/home/money.html" "business"
-#node /var/www/news/scrapers/newshub.js "https://www.newshub.co.nz/home/world.html" "world"
-
-
-#sed -i -e 's/\]\[/\,/g' /tmp/newshub.json
-#sed -i -e 's/\]undefined\[/\,/g' /tmp/newshub.json
-
-
 rm /tmp/1news.json
 
 node /var/www/news/scrapers/1news.js "https://www.1news.co.nz/new-zealand/" "nz"
 node /var/www/news/scrapers/1news.js "https://www.1news.co.nz/world/" "world"
-# node /var/www/news/scrapers/1news.js "https://www.1news.co.nz/sport/" "sport"
+node /var/www/news/scrapers/1news.js "https://www.1news.co.nz/sport/" "sport"
 node /var/www/news/scrapers/1news.js "https://www.1news.co.nz/politics/" "politics"
 node /var/www/news/scrapers/1news.js "https://www.1news.co.nz/tags/business/" "business"
 node /var/www/news/scrapers/1news.js "https://www.1news.co.nz/sport/rugby/" "sport"
-# node /var/www/news/scrapers/1news.js "https://www.1news.co.nz/sport/cricket/" "sport"
-node /var/www/news/scrapers/1news.js "https://www.1news.co.nz/sport/motorsport/"
 
 sed -i -e 's/\]\[/\,/g' /tmp/1news.json
 sed -i -e 's/\]undefined\[/\,/g' /tmp/1news.json
@@ -73,14 +58,14 @@ sed -i -e 's/\]undefined\[/\,/g' /tmp/odt.json
 
 python3 /var/www/news/scrapers/json-to-database.py
 
-python3 /var/www/news/scrapers/mlnews.py nz
-python3 /var/www/news/scrapers/mlnews.py sport
-python3 /var/www/news/scrapers/mlnews.py world
-python3 /var/www/news/scrapers/mlnews.py politics
-python3 /var/www/news/scrapers/mlnews.py technology
-python3 /var/www/news/scrapers/mlnews.py business
+python3 /var/www/news/scrapers/3mlnews.py nz
+python3 /var/www/news/scrapers/3mlnews.py sport
+python3 /var/www/news/scrapers/3mlnews.py world
+python3 /var/www/news/scrapers/3mlnews.py politics
+#python3 /var/www/news/scrapers/3mlnews.py technology
+python3 /var/www/news/scrapers/3mlnews.py business
 # python3 /var/www/news/scrapers/mlnews.py "te ao maori"
 
-python3 /var/www/news/scrapers/pubdate-getter.py -u "https://www.stuff.co.nz/sitemap.xml"
-python3 /var/www/news/scrapers/pubdate-getter.py -u "https://www.nzherald.co.nz/arc/outboundfeeds/sitemap-news/?outputType=xml&_website=nzh"
-python3 /var/www/news/scrapers/pubdate-getter.py -u "https://www.1news.co.nz/arc/outboundfeeds/news-sitemap/?outputType=xml"
+ #python3 /var/www/news/scrapers/pubdate-getter.py -u "https://www.stuff.co.nz/sitemap.xml"
+ #python3 /var/www/news/scrapers/pubdate-getter.py -u "https://www.nzherald.co.nz/arc/outboundfeeds/sitemap-news/?outputType=xml&_website=nzh"
+ #python3 /var/www/news/scrapers/pubdate-getter.py -u "https://www.1news.co.nz/arc/outboundfeeds/news-sitemap/?outputType=xml"

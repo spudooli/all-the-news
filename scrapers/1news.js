@@ -9,8 +9,9 @@ void (async () => {
     try {
         // create a new browser instance
         const browser = await puppeteer.launch({
-            headless: true
-        })
+            args: ['--no-sandbox', '--disable-setuid-sandbox'],
+          });
+        
 
         // create a page inside the browser
         const page = await browser.newPage();
