@@ -130,11 +130,47 @@ def liveupdates(lastid):
     currentlastid = cursor.fetchone()
     cursor.close()
     if int(currentlastid[0]) > lastid:
-        print("It's bigger")
+        #print("It's bigger")
         return "<a href='/'>Refresh for new news</a>"
     else:
-        print("It's not bigger")
+        #print("It's not bigger")
         return ""
+
+@app.route('/newsstats', strict_slashes=False, defaults={'newssubject': None} )
+@app.route("/newsstats/<newssubject>")
+def newsstats(newssubject):
+    if newssubject is None:
+        cursor = db.mysql.connection.cursor()
+        cursor.execute("""WITH RECURSIVE months AS (
+            SELECT DATE_FORMAT(MIN(scrapedate), '%Y-%m-01') AS month_start FROM news
+            UNION ALL
+            SELECT DATE_FORMAT(DATE_ADD(month_start, INTERVAL 1 MONTH), '%Y-%m-01')
+            FROM months
+            WHERE month_start < (SELECT DATE_FORMAT(MAX(scrapedate), '%Y-%m-01') FROM news)
+            )
+            SELECT 
+                DATE_FORMAT(m.month_start, '%b %Y') AS month_year, -- Format for display
+                COALESCE(COUNT(s.id), 0) AS news_count -- Ensure missing months show count = 0
+            FROM months m
+            LEFT JOIN (
+                SELECT id, DATE_FORMAT(scrapedate, '%Y-%m-01') AS month_start
+                FROM news
+                WHERE MATCH(headline) AGAINST('israel' IN NATURAL LANGUAGE MODE)
+            ) s ON m.month_start = s.month_start
+            GROUP BY m.month_start
+            ORDER BY m.month_start""")
+        newsstatsdata = cursor.fetchall()
+        newsstatslabels = [row[0] for row in newsstatsdata]
+        newsstatsvalues = [str(row[1]) for row in newsstatsdata]
+        cursor.close() 
+        
+
+        lastupdateddate = lastupdated()
+    else:
+        lastupdateddate = lastupdated()
+        pass
+
+    return render_template('newsstats.html', newssubject=newssubject, newsstatslabels=newsstatslabels, newsstatsvalues=newsstatsvalues, lastupdateddate=lastupdateddate)
 
 
 @app.errorhandler(404)

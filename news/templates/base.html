@@ -106,8 +106,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     </div>  
 
-  <div class="lastupdated">News last updated:<br>{{ lastupdateddate.strftime('%A, %-d %B, %Y %-H:%M') }}</div>
-  <div class="copyright">Another Spudooli Project<br><br>© Copyright {{ now.year }} <br> <a href="http://www.spudooli.com">Spudooli Investments Ltd</a></div>
+    <div class="lastupdated">News last updated:<br>{% if lastupdateddate %}
+      {{ lastupdateddate.strftime('%A, %-d %B, %Y %-H:%M') }}
+  {% else %}
+      N/A
+  {% endif %}</div>
+    <div class="copyright">Another Spudooli Project<br><br>© Copyright {{ now.year }} <br> <a href="http://www.spudooli.com">Spudooli Investments Ltd</a></div>
 </div>
 <!-- End right column -->
 

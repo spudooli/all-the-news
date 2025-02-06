@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% set active_page = section %}
+
+ {% block content %}
+
+
+            <h2 class="section">{% block title %} {{ section }} {% endblock %}</h2>
+        
+
+            <div class="container-counter-box">
+                <div class="container">
+                    <canvas id="mykfcChart" width="1000" height="400"></canvas>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+                    <script>
+                        var ctx = document.getElementById("mykfcChart").getContext('2d');
+                        var myChart = new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: {{ newsstatslabels | safe }},
+                                datasets: [
+                                    {
+                                        label: "News Headlines with the word Israel",
+                                        backgroundColor: '#195ddd',
+                                        borderColor: '#000',
+                                        data: {{ newsstatsvalues | safe }},
+                                    }
+                                ]
+                            },
+                            options: {
+                                responsive: true,
+                                scales: {
+                                    x: {
+                                        beginAtZero: true
+                                    },
+                                    y: {
+                                        beginAtZero: true
+                                    }
+                                }
+                            }
+                        });
+                    </script>
+                </div>
+            </div>
+        
+
+
+
+        {% endblock %}
