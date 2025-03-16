@@ -164,13 +164,37 @@ def newsstats(newssubject):
         newsstatsvalues = [str(row[1]) for row in newsstatsdata]
         cursor.close() 
         
+        cursor = db.mysql.connection.cursor()
+        cursor.execute(''' WITH RECURSIVE keyword_split AS (
+                -- Base case: Extract the first keyword from each row
+                SELECT id, 
+                    TRIM(LOWER(SUBSTRING_INDEX(keywords, ',', 1))) AS keyword, 
+                    SUBSTRING(keywords, LENGTH(SUBSTRING_INDEX(keywords, ',', 1)) + 2) AS remaining_keywords
+                FROM news
+                WHERE keywords IS NOT NULL AND keywords <> ''
 
-        lastupdateddate = lastupdated()
+                UNION ALL
+
+                -- Recursive case: Extract subsequent keywords
+                SELECT id, 
+                    TRIM(LOWER(SUBSTRING_INDEX(remaining_keywords, ',', 1))), 
+                    SUBSTRING(remaining_keywords, LENGTH(SUBSTRING_INDEX(remaining_keywords, ',', 1)) + 2)
+                FROM keyword_split
+                WHERE remaining_keywords IS NOT NULL AND remaining_keywords <> ''
+            )
+
+                SELECT keyword, COUNT(*) AS occurrences
+                FROM keyword_split
+                WHERE keyword IS NOT NULL AND keyword <> ''
+                GROUP BY keyword
+                ORDER BY occurrences DESC, keyword ASC
+                LIMIT 40''')
+        top40news = cursor.fetchall()
+
     else:
-        lastupdateddate = lastupdated()
         pass
 
-    return render_template('newsstats.html', newssubject=newssubject, newsstatslabels=newsstatslabels, newsstatsvalues=newsstatsvalues, lastupdateddate=lastupdateddate)
+    return render_template('newsstats.html', newssubject=newssubject, newsstatslabels=newsstatslabels, newsstatsvalues=newsstatsvalues, top40news=top40news)
 
 
 @app.errorhandler(404)
