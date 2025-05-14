@@ -100,7 +100,7 @@ def processjson(file):
             pass
 
 
-#processjson("/tmp/rnz.json")
+processjson("/tmp/rnz.json")
 processjson("/tmp/1news.json")
 processjson("/tmp/stuff.json")
 processjson("/tmp/nzherald.json")
@@ -139,6 +139,11 @@ connection.commit()
 cursor.execute(
             "DELETE FROM `news` WHERE `headline` LIKE '%Paddy Gower%'", )
 connection.commit()
+
+cursor.execute(
+            "DELETE FROM `news` WHERE `headline` LIKE '%NZ Herald News Update%'", )
+connection.commit()
+
 
 
 # def processrss(url, section):

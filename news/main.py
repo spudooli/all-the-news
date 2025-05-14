@@ -2,14 +2,13 @@ from news import app, db
 from flask import render_template, redirect
 from datetime import date
 from datetime import datetime, timedelta
+from itertools import groupby
+from operator import itemgetter
 
 
 def getthenewsagain(section):
     if section == "business" or section == "politics" or section == "world":
-        newsday = datetime.today() - timedelta(days=3)
-        newsday = f'{newsday.strftime("%Y-%m-%d")} 00:00:00'
-    elif section == "te ao maori":
-        newsday = datetime.today() - timedelta(days=10)
+        newsday = datetime.today() - timedelta(days=2)
         newsday = f'{newsday.strftime("%Y-%m-%d")} 00:00:00'
     elif section == "sport":
         newsday = datetime.today() - timedelta(days=2)
@@ -18,21 +17,45 @@ def getthenewsagain(section):
         today = date.today()
         newsday = f'{today.strftime("%Y-%m-%d")} 00:00:00'
     cursor = db.mysql.connection.cursor()
-    cursor.execute("SELECT id, headline, summary, source, url, clusterid, section, scrapedate, pubdate, featured, clustercount, imageurl, new FROM news where clusterid IS NOT NULL and section LIKE %s and scrapedate > %s  AND clustercount > 1 order by clustercount ASC, clusterid", (section, newsday))
+    cursor.execute("""
+        SELECT id, headline, summary, source, url, clusterid, section, scrapedate, 
+               pubdate, featured, clustercount, imageurl, new 
+        FROM news 
+        WHERE clusterid IS NOT NULL 
+          AND section LIKE %s 
+          AND scrapedate > %s  
+          AND clustercount > 1 
+        ORDER BY clusterid
+    """, (section, newsday))
     newsitems = cursor.fetchall()
     desc = cursor.description
     column_names = [col[0] for col in desc]
-    data = [dict(zip(column_names, row))
-            for row in newsitems]
+    data = [dict(zip(column_names, row)) for row in newsitems]
     cursor.close()
-    return data
+
+    # Group by clusterid
+    data.sort(key=itemgetter('clusterid'))  # Ensure sorted for groupby
+    grouped = []
+    for clusterid, items in groupby(data, key=itemgetter('clusterid')):
+        items_list = list(items)
+        grouped.append((clusterid, items_list))
+
+    # Sort clusters by clustercount (descending)
+    grouped.sort(key=lambda x: x[1][0]['clustercount'], reverse=True)
+
+    return grouped
 
 
 def getthetrendingitems(keyword):
     newsday = datetime.today() - timedelta(days=10)
     newsday = f'{newsday.strftime("%Y-%m-%d")} 00:00:00'
     cursor = db.mysql.connection.cursor()
-    cursor.execute("SELECT id, headline, summary, source, url, clusterid, section, scrapedate, pubdate, keywords, clustercount FROM news where clusterid IS NOT NULL and keywords LIKE %s and scrapedate > %s", ("%" + keyword + "%", newsday))
+    cursor.execute("""
+                   SELECT id, headline, summary, source, url, clusterid, 
+                   section, scrapedate, pubdate, keywords, clustercount 
+                   FROM news 
+                   WHERE clusterid IS NOT NULL 
+                   AND keywords LIKE %s and scrapedate > %s""", ("%" + keyword + "%", newsday))
     newsitems = cursor.fetchall()
     desc = cursor.description
     column_names = [col[0] for col in desc]

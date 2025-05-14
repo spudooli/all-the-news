@@ -3,32 +3,50 @@
 
  {% block content %}
 
-
-            <h2 class="section">{% block title %} {{ section }} {% endblock %}</h2>
-        
-            {% for clusterid, items in item1  | groupby("clusterid")  %}
-            {% for item in items  %}
-                    
-                    {% if loop.index == 1 %}
-                    <div>
-                    {% if item.imageurl %}
-                    <img src="{{ item.imageurl }}" class="newsitemimg">
+      <h2 class="section">{% block title %} {{ section }} {% endblock %}</h2>
+  
+      {% for clusterid, items in item1 %}
+          <div class="news-cluster">
+            {% for item in items %}
+              {% if loop.index == 1 %}
+                <div class="primary-item">
+                  {% if item.imageurl %}
+                    <img src="{{ item.imageurl }}" class="newsitemimg" alt="News image for {{ item.headline }}">
+                  {% endif %}
+                  <div class="headline">
+                    <a href="{{ item.url }}">{{ item.headline }}</a>
+                    {% if item.new == 1 %}
+                      <div class="newnews">New</div>
                     {% endif %}
-                    <div class="headline"><a href="{{ item.url }}">{{ item.headline}}</a>{% if item.new == 1 %}<div class="newnews"> New</div> {% endif %}</div>
-                    <div class="short"> {{item.summary}} <div class="sourcename"> {{item.source}} &nbsp;&nbsp;&nbsp; {{ item.pubdate|default('') }}</div></div>
-                    {% else %}
-                    <div class="secondaryitems">                  
-                    <div class="headline-other"><a href="{{ item.url }}">{{ item.headline}}</a>{% if item.new == 1 %}<div class="newnews"> New</div> {% endif %}</div>
-                    <div class="short"> {{item.summary}}  <div class="sourcename">{{item.source}}</div></div>
-                    </div>  
-                    {% endif %}
-                    {% endfor %}
+                  </div>
+                  <div class="short">
+                    {{ item.summary }}
+                    <div class="sourcename">
+                      {{ item.source }} &nbsp;&nbsp;&nbsp; {{ item.pubdate|default('') }}
                     </div>
-                <hr>
-              {% endfor %}
-        
+                  </div>
+                </div>
+              {% else %}
+                <div class="secondaryitems">
+                  <div class="headline-other">
+                    <a href="{{ item.url }}">{{ item.headline }}</a>
+                    {% if item.new == 1 %}
+                      <div class="newnews">New</div>
+                    {% endif %}
+                  </div>
+                  <div class="short">
+                    {{ item.summary }}
+                    <div class="sourcename">{{ item.source }}</div>
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+            <hr>
+          </div>
+      {% endfor %}
+  
 
-<script src="/static/js/jquery-3.6.0.min.js" type="text/javascript"></script>
+<script src="/static/js/jquery-3.7.1.min.js" type="text/javascript"></script>
 <script>
 
 
