@@ -144,6 +144,10 @@ cursor.execute(
             "DELETE FROM `news` WHERE `headline` LIKE '%NZ Herald News Update%'", )
 connection.commit()
 
+cursor.execute(
+            "DELETE FROM `news` WHERE `headline` LIKE 'HeraldNOW%' OR `headline` LIKE 'Herald NOW%'", )
+connection.commit()
+
 
 
 # def processrss(url, section):

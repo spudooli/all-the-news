@@ -66,6 +66,6 @@ python3 /var/www/news/scrapers/3mlnews.py politics
 python3 /var/www/news/scrapers/3mlnews.py business
 # python3 /var/www/news/scrapers/mlnews.py "te ao maori"
 
- #python3 /var/www/news/scrapers/pubdate-getter.py -u "https://www.stuff.co.nz/sitemap.xml"
- #python3 /var/www/news/scrapers/pubdate-getter.py -u "https://www.nzherald.co.nz/arc/outboundfeeds/sitemap-news/?outputType=xml&_website=nzh"
- #python3 /var/www/news/scrapers/pubdate-getter.py -u "https://www.1news.co.nz/arc/outboundfeeds/news-sitemap/?outputType=xml"
+ python3 /var/www/news/scrapers/pubdate-getter.py -u "https://www.stuff.co.nz/sitemap.xml"
+ python3 /var/www/news/scrapers/pubdate-getter.py -u "https://www.nzherald.co.nz/arc/outboundfeeds/sitemap-news/?outputType=xml&_website=nzh"
+ python3 /var/www/news/scrapers/pubdate-getter.py -u "https://www.1news.co.nz/arc/outboundfeeds/news-sitemap/?outputType=xml"

@@ -14,11 +14,13 @@ connection = mysql.connector.connect(
 )
 
 def parse_sitemap(url):
-    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36"}
+    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"}
     resp = requests.get(url, headers=headers)
+    print("Fetching " + url)
 
     # we didn't get a valid response, bail
     if 200 != resp.status_code:
+        print("not a valid response from " + url)
         return False
 
     # BeautifulStoneSoup to parse the document
@@ -26,9 +28,11 @@ def parse_sitemap(url):
 
     # find all the <url> tags in the document
     urls = soup.findAll('url')
+    print("Found " + str(len(urls)) + " urls in " + url)
 
     # no urls? bail
     if not urls:
+        print("no urls found in " + url)
         return False
 
     # storage for later...
@@ -57,7 +61,7 @@ def parse_sitemap(url):
                     else:
                         dt = datetime.strptime(last, '%Y-%m-%dT%H:%M:%SZ')
                     dt = pytz.timezone(local).localize(dt)
-                    nz_dt = dt.astimezone(pytz.timezone('NZ'))
+                    nz_dt = dt.astimezone(pytz.timezone('Pacific/Auckland'))
                     publishdate = nz_dt.strftime("%-d %b %Y %H:%M")
                     print("Publish Date " + publishdate)
                     cursor.execute("UPDATE `news` SET `pubdate` = %s WHERE `id` = %s", (publishdate, newsid[0]))
