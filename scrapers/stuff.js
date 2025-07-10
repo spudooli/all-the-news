@@ -31,12 +31,12 @@ void (async () => {
 
         let urls = await page.evaluate((section) => {
             let results = [];
-            let items = document.querySelectorAll('a.story-card-link');
+            let items = document.querySelectorAll('div.w-full');
 
             try {
                 items.forEach((item) => {
-                    if (item.querySelector('h5')) {
-                        var headline = item.querySelector('h5').innerText;
+                    if (item.querySelector('h3')) {
+                        var headline = item.querySelector('h3').innerText;
                     } else {
                         var headline = '';
                     };
