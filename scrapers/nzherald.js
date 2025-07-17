@@ -41,8 +41,9 @@ void (async () => {
                     } else {
                         var summary = '';
                     };
-                    if (item.querySelector('a').getAttribute("href")) {
-                        var url = item.querySelector('a').getAttribute("href");
+                    var link = item.querySelector('a.story-card__heading__link') || item.querySelector('a');
+                    if (link && link.getAttribute("href")) {
+                        var url = link.getAttribute("href");
                     } else {
                         var url = '';
                     };

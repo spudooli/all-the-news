@@ -1,5 +1,9 @@
 #!/bin/bash
 
+rm /tmp/stuff-summaries.json
+node /var/www/news/scrapers/stuff-summaries.js "https://www.stuff.co.nz/latest-news" nz
+python3 /var/www/news/scrapers/update-stuff-summaries.py
+
 rm /tmp/rnz.json
 
 node /var/www/news/scrapers/rnz.js "https://www.rnz.co.nz/news/national" "nz"
