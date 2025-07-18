@@ -143,3 +143,22 @@ font-size: 12px;
   height: 3px;
   background-color: #e45711; 
 }
+
+.breaking-news-block {
+  background-color: #f6eaeb;
+  padding: 10px;
+  border: 1px solid #f5c6cb;
+  margin-bottom: 20px;
+}
+
+.breaking-news-type {
+  font-weight: bold;
+  color: #e45711;
+  font-size: 20px;
+}
+
+.breaking-news-block {
+  font-size: 20px;
+
+}
+

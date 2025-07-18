@@ -45,6 +45,34 @@ def getthenewsagain(section):
 
     return grouped
 
+@app.route('/api/breakingnews')
+def api_breakingnews():
+    cursor = db.mysql.connection.cursor()
+    cursor.execute("""
+        SELECT headline, source, url, type
+        FROM breaking_news
+        ORDER BY id DESC
+        LIMIT 10
+    """)
+    news = cursor.fetchall()
+    cursor.close()
+
+    if not news:
+        return ""
+
+    html = """
+    <div class="breaking-news-block">
+        <div class="breaking-news-type">Breaking News</div><br />
+    """
+    for headline, source, url, type_ in news:
+        html += f"""
+        <div class="breaking-news-item">
+            <a href="{url}" target="_blank">{headline}</a><br />
+            <div class="sourcename">{source}</div>
+        </div>
+        """
+    html += "</div>"
+    return html
 
 def getthetrendingitems(keyword):
     newsday = datetime.today() - timedelta(days=10)
