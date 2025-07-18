@@ -31,13 +31,13 @@ void (async () => {
 
         let urls = await page.evaluate((section) => {
             let results = [];
-            let items = document.querySelectorAll('div.story-card__content');
+            let items = document.querySelectorAll('article.bg-white');
 
             try {
                 items.forEach((item) => {
 
-                    if (item.querySelector('p.story-card__deck')) {
-                        var summary = item.querySelector('p.story-card__deck').innerText;
+                    if (item.querySelector('p')) {
+                        var summary = item.querySelector('p').innerText;
                     } else {
                         var summary = '';
                     };
@@ -47,8 +47,8 @@ void (async () => {
                     } else {
                         var url = '';
                     };
-                    if (item.querySelector('div.story-card__heading-wrapper')) {
-                        var headline = item.querySelector('div.story-card__heading-wrapper').innerText;
+                    if (item.querySelector('h3')) {
+                        var headline = item.querySelector('h3').innerText;
                     } else {
                         var headline = '';
                     };
