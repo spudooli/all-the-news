@@ -2,6 +2,19 @@ import requests
 import mysql.connector
 import re
 import json
+from ollama import chat
+from ollama import ChatResponse
+
+def clickbaitornot(headline):  
+    # Use the Ollama API to determine if a headline is clickbait or not
+    response: ChatResponse = chat(
+        model="llama3.2",
+        messages=[
+            {"role": "system", "content": "You are a clickbait detector."},
+            {"role": "user", "content": f"Is this headline clickbait? {headline} - Answer with a simple yes or no"}
+        ]
+    )
+    return response.message.content
 
 DB_CONFIG = {
     "host": "localhost",
@@ -52,19 +65,25 @@ def fetch_nzherald_alerts():
 def save_alerts(alerts):
     conn = mysql.connector.connect(**DB_CONFIG)
     cursor = conn.cursor()
-    for alert in alerts:
-        cursor.execute("SELECT id FROM breaking_news WHERE url = %s", (alert["url"],))
-        if cursor.fetchone():
-            continue
-        cursor.execute(
-            "INSERT INTO breaking_news (type, headline, source, url) VALUES (%s, %s, %s, %s)",
-            (
-                alert.get("type", ""),
-                alert.get("headline", ""),
-                alert.get("source", ""),
-                alert.get("url", "")
+    with open("/tmp/llllm.txt", "a") as logf:
+        for alert in alerts:
+            headline = alert.get("headline", "")
+            is_clickbait = clickbaitornot(headline)
+            logf.write(f"{headline} | clickbait: {is_clickbait}\n")
+            if is_clickbait.lower() == "yes":
+                continue
+            cursor.execute("SELECT id FROM breaking_news WHERE url = %s", (alert["url"],))
+            if cursor.fetchone():
+                continue
+            cursor.execute(
+                "INSERT INTO breaking_news (type, headline, source, url) VALUES (%s, %s, %s, %s)",
+                (
+                    alert.get("type", ""),
+                    headline,
+                    alert.get("source", ""),
+                    alert.get("url", "")
+                )
             )
-        )
     conn.commit()
     cursor.close()
     conn.close()
@@ -80,6 +99,7 @@ def main():
     } for alert in stuff_alerts]
     nzherald_alerts = fetch_nzherald_alerts()
     all_alerts = stuff_formatted + nzherald_alerts
+
     save_alerts(all_alerts)
 
 if __name__ == "__main__":

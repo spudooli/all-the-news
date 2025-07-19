@@ -144,7 +144,7 @@ def index(section):
         section = 'Politics'
         item1 = getthenewsagain("politics")
     elif section is None:
-        section = 'NZ News'
+        section = 'Aotearoa NZ News'
         item1 = getthenewsagain("nz")
     elif section == 'te-ao-maori':
         section = 'Te Ao Māori'

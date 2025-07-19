@@ -86,11 +86,6 @@ def processjson(file):
               urlhash = hashlib.md5(item['url'].encode())
               text = item['headline'] + " " + item['summary']
               keywords = keywordextract(text)
-
-            #   if item['source'] == "Stuff":
-            #       print("...................................................................................................")
-            #       item['imgurl'] = get_og_image(item['url'])
-              
               cursor.execute(
                   "INSERT IGNORE INTO news (source, section, headline, summary, url, urlhash, keywords, pubdate, imageurl, new) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
                   (item['source'], item['section'], item['headline'], item['summary'], item['url'], urlhash.hexdigest(), keywords, item['pubdate'], item['imgurl'], "1") )
@@ -125,11 +120,7 @@ cursor.execute(
 connection.commit()
 
 cursor.execute(
-            "DELETE FROM `news` WHERE `headline` LIKE '%Lotto%'", )
-connection.commit()
-
-cursor.execute(
-            "DELETE FROM `news` WHERE `summary` LIKE '%Lotto%'", )
+            "DELETE FROM `news` WHERE `headline` LIKE '%Lotto%' OR `summary` LIKE '%Lotto%'", )
 connection.commit()
 
 cursor.execute(
