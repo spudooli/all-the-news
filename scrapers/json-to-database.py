@@ -94,11 +94,16 @@ def processjson(file):
             print(e)
             pass
 
-
+print("Processing JSON files...")
+print("Processing RNZ")
 processjson("/tmp/rnz.json")
+print("Processing 1News")
 processjson("/tmp/1news.json")
+print("Processing Stuff")
 processjson("/tmp/stuff.json")
+print("Processing NZ Herald")
 processjson("/tmp/nzherald.json")
+print("Processing ODT")
 processjson("/tmp/odt.json")
 
 # Delete news items that are opinion or Sponsored

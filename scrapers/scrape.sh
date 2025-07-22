@@ -16,7 +16,7 @@ sed -i -e 's/\]undefined\[/\,/g' /tmp/rnz.json
 rm /tmp/1news.json
 node /var/www/news/scrapers/1news.js "https://www.1news.co.nz/new-zealand/" "nz"
 node /var/www/news/scrapers/1news.js "https://www.1news.co.nz/world/" "world"
-node /var/www/news/scrapers/1news.js "https://www.1news.co.nz/sport/" "sport"
+#node /var/www/news/scrapers/1news.js "https://www.1news.co.nz/sport/" "sport"
 node /var/www/news/scrapers/1news.js "https://www.1news.co.nz/politics/" "politics"
 node /var/www/news/scrapers/1news.js "https://www.1news.co.nz/tags/business/" "business"
 node /var/www/news/scrapers/1news.js "https://www.1news.co.nz/sport/rugby/" "sport"

@@ -5,16 +5,6 @@ import json
 from ollama import chat
 from ollama import ChatResponse
 
-def clickbaitornot(headline):  
-    # Use the Ollama API to determine if a headline is clickbait or not
-    response: ChatResponse = chat(
-        model="llama3.2",
-        messages=[
-            {"role": "system", "content": "You are a clickbait detector."},
-            {"role": "user", "content": f"Is this headline clickbait? {headline} - Answer with a simple yes or no"}
-        ]
-    )
-    return response.message.content
 
 DB_CONFIG = {
     "host": "localhost",
@@ -30,6 +20,7 @@ HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 }
 
+
 def delete_old_alerts():    
     conn = mysql.connector.connect(**DB_CONFIG)
     cursor = conn.cursor()
@@ -38,10 +29,22 @@ def delete_old_alerts():
     cursor.close()
     conn.close()
 
+
 def fetch_stuff_alerts():
     resp = requests.get(STUFF_API_URL, headers=HEADERS)
     resp.raise_for_status()
-    return resp.json()
+    alerts = resp.json()
+    # Convert Stuff format to unified format
+    formatted = []
+    for alert in alerts:
+        formatted.append({
+            "type": alert.get("type", ""),
+            "headline": alert.get("teaser", ""),
+            "source": "Stuff",
+            "url": alert.get("link", "")
+        })
+    return formatted
+
 
 def fetch_nzherald_alerts():
     resp = requests.get(NZHERALD_API_URL, headers=HEADERS)
@@ -62,45 +65,39 @@ def fetch_nzherald_alerts():
         })
     return formatted
 
+
 def save_alerts(alerts):
     conn = mysql.connector.connect(**DB_CONFIG)
     cursor = conn.cursor()
     with open("/tmp/llllm.txt", "a") as logf:
         for alert in alerts:
             headline = alert.get("headline", "")
-            is_clickbait = clickbaitornot(headline)
-            logf.write(f"{headline} | clickbait: {is_clickbait}\n")
-            if is_clickbait.lower() == "yes":
-                continue
+            logf.write(f"{headline} \n")
+            score = "1"
             cursor.execute("SELECT id FROM breaking_news WHERE url = %s", (alert["url"],))
             if cursor.fetchone():
                 continue
             cursor.execute(
-                "INSERT INTO breaking_news (type, headline, source, url) VALUES (%s, %s, %s, %s)",
+                "INSERT INTO breaking_news (type, headline, source, url, score) VALUES (%s, %s, %s, %s, %s)",
                 (
                     alert.get("type", ""),
                     headline,
                     alert.get("source", ""),
-                    alert.get("url", "")
+                    alert.get("url", ""),
+                    score
                 )
             )
     conn.commit()
     cursor.close()
     conn.close()
 
+
 def main():
     stuff_alerts = fetch_stuff_alerts()
-    # Convert Stuff format to unified format
-    stuff_formatted = [{
-        "type": alert.get("type", ""),
-        "headline": alert.get("teaser", ""),
-        "source": "Stuff",
-        "url": alert.get("link", "")
-    } for alert in stuff_alerts]
     nzherald_alerts = fetch_nzherald_alerts()
-    all_alerts = stuff_formatted + nzherald_alerts
-
+    all_alerts = stuff_alerts + nzherald_alerts
     save_alerts(all_alerts)
+
 
 if __name__ == "__main__":
     delete_old_alerts()
