@@ -17,7 +17,7 @@ STUFF_API_URL = "https://www.stuff.co.nz/api/v1.0/stuff/alert"
 NZHERALD_API_URL = "https://syndication.nzherald.co.nz/shareddata/newsbar/newsbarscript.js"
 
 HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36"
 }
 
 
@@ -69,10 +69,11 @@ def fetch_nzherald_alerts():
 def save_alerts(alerts):
     conn = mysql.connector.connect(**DB_CONFIG)
     cursor = conn.cursor()
-    with open("/tmp/llllm.txt", "a") as logf:
-        for alert in alerts:
+    for alert in alerts:
             headline = alert.get("headline", "")
-            logf.write(f"{headline} \n")
+            # Skip if headline contains ':'
+            if ":" in headline:
+                continue
             score = "1"
             cursor.execute("SELECT id FROM breaking_news WHERE url = %s", (alert["url"],))
             if cursor.fetchone():
