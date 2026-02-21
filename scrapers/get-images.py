@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 
 def get_og_image(url):
     try:
-        headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36'}
+        headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36'}
         response = requests.get(url, headers=headers)
         response.raise_for_status()
         soup = BeautifulSoup(response.content, 'html.parser')

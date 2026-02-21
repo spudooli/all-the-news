@@ -7,6 +7,9 @@ import sys
 import ssl
 import requests
 from bs4 import BeautifulSoup
+from halo import Halo
+
+spinner = Halo(text='Loading', spinner='dots')
 
 if hasattr(ssl, '_create_unverified_context'):
     ssl._create_default_https_context = ssl._create_unverified_context
@@ -23,7 +26,7 @@ cursor = connection.cursor()
 
 def get_og_image(url):
     try:
-        headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36'}
+        headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36'}
         response = requests.get(url, headers=headers)
         response.raise_for_status()
         soup = BeautifulSoup(response.content, 'html.parser')
@@ -43,22 +46,6 @@ def get_og_image(url):
 mysql_insert_query = "update news set new = 0"
 cursor.execute(mysql_insert_query,)
 connection.commit()
-
-spin = 1
-def spinner():
-  global spin
-  if spin == 1:
-    spin = spin + 1
-    return "|"
-  elif spin == 2:
-    spin = spin + 1
-    return "/"
-  elif spin == 3:
-    spin = spin + 1
-    return "-"
-  elif spin == 4:
-    spin = 1
-    return "\\"
 
 def keywordextract(text):
     language = "en"
@@ -80,9 +67,6 @@ def processjson(file):
         try:
           data = json.load(f)
           for item in data:
-              sys.stdout.write(spinner())
-              sys.stdout.flush()
-              sys.stdout.write('\b')
               urlhash = hashlib.md5(item['url'].encode())
               text = item['headline'] + " " + item['summary']
               keywords = keywordextract(text)
@@ -93,21 +77,22 @@ def processjson(file):
         except Exception as e:
             print(e)
             pass
-
-print("Processing JSON files...")
-print("Processing RNZ")
+spinner.start()
+spinner.text = "Processing JSON files..."
+spinner.color = "yellow"
+spinner.text = "Processing RNZ"
 processjson("/tmp/rnz.json")
-print("Processing 1News")
+spinner.text = "Processing 1News..."
 processjson("/tmp/1news.json")
-print("Processing Stuff")
+spinner.text = "Processing Stuff..."
 processjson("/tmp/stuff.json")
-print("Processing NZ Herald")
+spinner.text = "Processing NZ Herald..."
 processjson("/tmp/nzherald.json")
-print("Processing ODT")
+spinner.text = "Processing ODT..."
 processjson("/tmp/odt.json")
 
 # Delete news items that are opinion or Sponsored
-print("Deleting the opinion and other cruft")
+spinner.text = "Deleting the opinion and other cruft"
 cursor.execute(
             "DELETE FROM `news` WHERE `headline` LIKE '%opinion%' OR `headline` LIKE '%OPINION%'", )
 connection.commit()
@@ -144,6 +129,9 @@ cursor.execute(
             "DELETE FROM `news` WHERE `headline` LIKE 'HeraldNOW%' OR `headline` LIKE 'Herald NOW%'", )
 connection.commit()
 
+cursor.execute(
+            "DELETE FROM `news` WHERE `headline` LIKE 'NZ Herald Morning Headlines%' OR `headline` LIKE 'Herald NOW%'", )
+connection.commit()
 
 
 # def processrss(url, section):
@@ -170,3 +158,5 @@ connection.commit()
 # processrss("https://www.nbr.co.nz/politics/rss", "Politics")
 
 connection.close()
+
+spinner.stop()

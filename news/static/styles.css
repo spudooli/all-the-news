@@ -2,6 +2,7 @@
   font-family: fixeltext;
   src: url(/static/fixeltext-regular.woff2);
 }
+
 @font-face {
   font-family: fixeltext;
   src: url(/static/fixeltext-bold.woff2);
@@ -17,7 +18,7 @@ a:link {
 }
 
 a:hover {
-text-decoration: underline;
+  text-decoration: underline;
 }
 
 a:visited {
@@ -61,7 +62,7 @@ a:visited {
 
 @media only screen and (max-width: 768px) {
   .newsitemimg {
-      display: none;
+    display: none;
   }
 }
 
@@ -88,7 +89,6 @@ a:visited {
   top: 0;
   left: 0;
   height: 400px;
-  background-color: #f5f5f5;
   padding: 20px;
 
 }
@@ -103,7 +103,7 @@ a:visited {
   padding: 20px;
 }
 
-.lastupdated { 
+.lastupdated {
   margin-top: 20px;
   padding: 20px;
   font-size: 12px;
@@ -113,9 +113,9 @@ a:visited {
 }
 
 .copyright {
-margin-top: 280px;
-padding: 20px;
-font-size: 12px;
+  margin-top: 480px;
+  padding: 20px;
+  font-size: 12px;
 
 
 }
@@ -124,7 +124,7 @@ font-size: 12px;
   float: right;
   margin-left: 10px;
   margin-bottom: 10px;
-  max-width:250px;
+  max-width: 250px;
   height: auto;
 
 }
@@ -141,7 +141,7 @@ font-size: 12px;
 
 #top-bar {
   height: 3px;
-  background-color: #e45711; 
+  background-color: #e45711;
 }
 
 .breaking-news-block {
@@ -162,3 +162,8 @@ font-size: 12px;
 
 }
 
+.big-number {
+  font-size: 60px;
+  font-weight: bold;
+  color: #e45711;
+}

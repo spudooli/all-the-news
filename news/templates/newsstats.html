@@ -1,48 +1,87 @@
 {% extends 'base.html' %}
-{% set active_page = section %}
+{% set active_page = 'News Stats' %}
 
- {% block content %}
+{% block content %}
 
 
-            <h2 class="section">{% block title %} {{ section }} {% endblock %}</h2>
-        
+<h2 class="section">{% block title %} News Stats for News Nerds {% endblock %}</h2>
 
-            <div class="container-counter-box">
-                <div class="container">
-                    <canvas id="mykfcChart" width="1000" height="400"></canvas>
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-                    <script>
-                        var ctx = document.getElementById("mykfcChart").getContext('2d');
-                        var myChart = new Chart(ctx, {
-                            type: 'bar',
-                            data: {
-                                labels: {{ newsstatslabels | safe }},
-                                datasets: [
-                                    {
-                                        label: "News Headlines with the word Israel",
-                                        backgroundColor: '#195ddd',
-                                        borderColor: '#000',
-                                        data: {{ newsstatsvalues | safe }},
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="big-number">{{ totalnewsheadlines }}</div>
+        <div class="headline-other">Total Headlines Scraped</div>
+    </div>
+    <div class="col-md-8">
+        Text goes here
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="big-number"></div>
+        <div class="headline-other"></div>
+    </div>
+    <div class="col-md-8">
+        <h5></h5>Headlines by News Source</h5>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">News Source</th>
+                    <th scope="col" class="text-end">Headline Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for source, count in newsbysource %}
+                <tr>
+                    <td>{{ source }}</td>
+                    <td class="text-end">{{ "{:,}".format(count) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="container-counter-box">
+    <div class="container">
+        <canvas id="mykfcChart" width="1000" height="400"></canvas>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+        <script>
+            var ctx = document.getElementById("mykfcChart").getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: {{ newsstatslabels | safe }},
+            datasets: [
+                {
+                    label: "News Headlines with the word {{newssubject}}",
+                    backgroundColor: '#e45711',
+                    borderColor: '#000',
+                    data: {{ newsstatsvalues | safe }},
                                     }
-                                ]
-                            },
-                            options: {
-                                responsive: true,
-                                scales: {
-                                    x: {
-                                        beginAtZero: true
-                                    },
-                                    y: {
-                                        beginAtZero: true
-                                    }
-                                }
-                            }
+            ]
+                             },
+            options: {
+                responsive: true,
+                    scales: {
+                    x: {
+                        beginAtZero: true
+                    },
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
                         });
-                    </script>
-                </div>
-            </div>
-        
+        </script>
+    </div>
+</div>
 
 
 
-        {% endblock %}
+
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}

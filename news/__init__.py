@@ -8,3 +8,4 @@ def inject_now():
     return {'now': datetime.utcnow()}
 
 import news.main
+import news.newsstats
