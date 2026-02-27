@@ -2,8 +2,6 @@ import requests
 import mysql.connector
 import re
 import json
-from ollama import chat
-from ollama import ChatResponse
 
 
 DB_CONFIG = {
