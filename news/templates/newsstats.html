@@ -43,40 +43,81 @@
     </div>
 </div>
 
-<div class="container-counter-box">
-    <div class="container">
-        <canvas id="mykfcChart" width="1000" height="400"></canvas>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-        <script>
-            var ctx = document.getElementById("mykfcChart").getContext('2d');
-            var myChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: {{ newsstatslabels | safe }},
-            datasets: [
-                {
-                    label: "News Headlines with the word {{newssubject}}",
-                    backgroundColor: '#e45711',
-                    borderColor: '#000',
-                    data: {{ newsstatsvalues | safe }},
-                                    }
-            ]
-                             },
-            options: {
-                responsive: true,
-                    scales: {
-                    x: {
-                        beginAtZero: true
-                    },
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-                        });
-        </script>
+<div class="row mt-4">
+    <div class="col-md-8">
+        <h5>Search headline frequency by topic</h5>
+        <div class="d-flex align-items-center gap-3 mb-3">
+            <input type="text" id="chartSearch" class="form-control" placeholder="e.g. climate, election, housing">
+            <button class="btn btn-primary" id="chartSearchBtn">Search</button>
+        </div>
+        <div id="chartError" class="text-danger mb-2" style="display:none"></div>
+        <div id="chartSpinner" style="display:none">
+            <div class="spinner-border spinner-border-sm text-secondary me-2" role="status"></div>
+            <span class="text-secondary">Searching...</span>
+        </div>
     </div>
 </div>
+
+<div id="chartContainer" style="display:none">
+    <canvas id="mykfcChart"></canvas>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+    var myChart = null;
+
+    function loadChart() {
+        var term = document.getElementById('chartSearch').value.trim();
+        if (!term) return;
+
+        document.getElementById('chartError').style.display = 'none';
+        document.getElementById('chartContainer').style.display = 'none';
+        document.getElementById('chartSpinner').style.display = 'block';
+
+        fetch('/newsstats/chart-data?q=' + encodeURIComponent(term))
+            .then(function(response) {
+                if (!response.ok) throw new Error('Request failed');
+                return response.json();
+            })
+            .then(function(data) {
+                document.getElementById('chartSpinner').style.display = 'none';
+                document.getElementById('chartContainer').style.display = 'block';
+
+                if (myChart) myChart.destroy();
+
+                var ctx = document.getElementById('mykfcChart').getContext('2d');
+                myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            label: 'Headlines mentioning "' + data.subject + '"',
+                            backgroundColor: '#e45711',
+                            borderColor: '#000',
+                            data: data.values,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            x: { beginAtZero: true },
+                            y: { beginAtZero: true }
+                        }
+                    }
+                });
+            })
+            .catch(function() {
+                document.getElementById('chartSpinner').style.display = 'none';
+                document.getElementById('chartError').textContent = 'Could not load chart data.';
+                document.getElementById('chartError').style.display = 'block';
+            });
+    }
+
+    document.getElementById('chartSearchBtn').addEventListener('click', loadChart);
+    document.getElementById('chartSearch').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') loadChart();
+    });
+</script>
 
 
 

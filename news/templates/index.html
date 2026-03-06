@@ -48,35 +48,23 @@
       {% endfor %}
   
 
-<script src="/static/js/jquery-3.7.1.min.js" type="text/javascript"></script>
 <script>
-
   function liveupdates() {
-    $.get('/liveupdates/{{ lastid }}', function (data) {
-      $('#liveupdates').html(data);
-    });
+    fetch('/liveupdates/{{ lastid }}')
+      .then(function(r) { return r.text(); })
+      .then(function(data) { document.getElementById('liveupdates').innerHTML = data; });
   }
-
-  $(document).ready(function () {
-    setInterval(liveupdates, 600000);
-  });
 
   function breakingnews() {
-    $.get('/api/breakingnews', function (data) {
-      $('#breakingnews').html(data);
-    });
+    fetch('/api/breakingnews')
+      .then(function(r) { return r.text(); })
+      .then(function(data) { document.getElementById('breakingnews').innerHTML = data; });
   }
 
-  $(document).ready(function () {
-    setInterval(breakingnews, 300000);
-  });
-
-  function start() {
-    liveupdates();
-    breakingnews();
-  }
-
-  window.onload = start;
+  liveupdates();
+  breakingnews();
+  setInterval(liveupdates, 600000);
+  setInterval(breakingnews, 300000);
 </script>
 
 
