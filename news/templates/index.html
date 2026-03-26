@@ -7,7 +7,7 @@
 
       <h2 class="section">{% block title %} {{ section }} {% endblock %}</h2>
   
-      {% for clusterid, items in item1 %}
+      {% for clusterid, items, social in item1 %}
           <div class="news-cluster">
             {% for item in items %}
               {% if loop.index == 1 %}
@@ -43,6 +43,12 @@
                 </div>
               {% endif %}
             {% endfor %}
+            {% if social %}
+            <div class="social-discussion">
+              <span class="social-label">Mastodon:</span>
+              {% for post in social %}<a href="{{ post.post_url }}" class="social-post-link">@{{ post.username }}</a>{% if not loop.last %} &middot; {% endif %}{% endfor %}
+            </div>
+            {% endif %}
             <hr>
           </div>
       {% endfor %}

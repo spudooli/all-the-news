@@ -43,7 +43,39 @@ def getthenewsagain(section):
     # Sort clusters by clustercount (descending)
     grouped.sort(key=lambda x: x[1][0]['clustercount'], reverse=True)
 
-    return grouped
+    # Fetch social posts matching any news URL in this section's results
+    all_urls = [item['url'] for _, items_list in grouped for item in items_list]
+    social_by_url = {}
+    if all_urls:
+        placeholders = ', '.join(['%s'] * len(all_urls))
+        cursor2 = db.mysql.connection.cursor()
+        cursor2.execute(f"""
+            SELECT username, user_url, post_url, card_url
+            FROM social_news
+            WHERE card_url IN ({placeholders})
+            ORDER BY created_at DESC
+        """, all_urls)
+        social_rows = cursor2.fetchall()
+        social_desc = cursor2.description
+        social_cols = [col[0] for col in social_desc]
+        cursor2.close()
+        for row in social_rows:
+            post = dict(zip(social_cols, row))
+            social_by_url.setdefault(post['card_url'], []).append(post)
+
+    # Attach social posts to each cluster
+    grouped_with_social = []
+    for clusterid, items_list in grouped:
+        cluster_social = []
+        seen_post_urls = set()
+        for item in items_list:
+            for post in social_by_url.get(item['url'], []):
+                if post['post_url'] not in seen_post_urls:
+                    cluster_social.append(post)
+                    seen_post_urls.add(post['post_url'])
+        grouped_with_social.append((clusterid, items_list, cluster_social))
+
+    return grouped_with_social
 
 @app.route('/api/breakingnews')
 def api_breakingnews():
@@ -166,7 +198,7 @@ def trending(url):
     data = cursor.fetchone()
     keyword = data[1]
     section = data[2]
-    item1 = getthetrendingitems(keyword)
+    item1 = [(item.get('clusterid'), [item], []) for item in getthetrendingitems(keyword)]
     lastid = getthelastid()
     featured = getfeatured()
     lastupdateddate = lastupdated()

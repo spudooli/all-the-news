@@ -167,3 +167,23 @@ a:visited {
   font-weight: bold;
   color: #e45711;
 }
+
+.social-discussion {
+  font-size: 12px;
+  margin-top: 4px;
+  margin-bottom: 8px;
+  padding-left: 20px;
+  color: #555;
+}
+
+.social-label {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 500;
+  font-size: 10px;
+  margin-right: 6px;
+}
+
+.social-post-link {
+  color: #6364ff;
+}

@@ -7,15 +7,15 @@ fi
 
 echo "Copying the app..."
 
-cp -p /home/dave/Sites/news/news/* /var/www/news/news/
-cp -pr /home/dave/Sites/news/scrapers/* /var/www/news/scrapers/
+cp -p /home/dave/Sites/news.spudooli.com/news/* /var/www/news/news/
+cp -pr /home/dave/Sites/news.spudooli.com/scrapers/* /var/www/news/scrapers/
 
 echo "Deploying the static assets..."
 
-cp -pr /home/dave/Sites/news/news/static/* /var/www/news/news/static/
+cp -pr /home/dave/Sites/news.spudooli.com/news/static/* /var/www/news/news/static/
 
 echo "Deploying the templates..."
-cp -rp /home/dave/Sites/news/news/templates/* /var/www/news/news/templates/
+cp -rp /home/dave/Sites/news.spudooli.com/news/templates/* /var/www/news/news/templates/
 
 echo "Clearing the production cache..."
 rm -rf /var/www/news/news/__pycache__
