@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% set active_page = section %}
+
+{% block sidebar %}
+<h4>On This Day</h4>
+<ul>
+  <li><a href="/on-this-day/1year">News this day last year</a></li>
+  <li><a href="/on-this-day/3years">News this day 3 years ago</a></li>
+</ul>
+
+<h4>Some Trending Things</h4>
+
+{% for category, feature in featured | groupby("category") %}
+<br>
+{{ category}}
+<br>
+{% for thing in feature %}
+<ul>
+  <li><a href="/trending/{{thing.url }}">{{ thing.title }}</a></li>
+</ul>
+{% endfor %}
+{% endfor %}
+{% endblock %}
+
+{% block content %}
+
+      <h2 class="section">{% block title %} {{ section }} {% endblock %}</h2>
+
+      {% for clusterid, items, social in item1 %}
+          <div class="news-cluster">
+            {% for item in items %}
+              {% if loop.index == 1 %}
+                <div class="primary-item">
+                  {% if item.imageurl %}
+                    <img src="{{ item.imageurl }}" class="newsitemimg" alt="News image for {{ item.headline }}">
+                  {% endif %}
+                  <div class="headline">
+                    <a href="{{ item.url }}">{{ item.headline }}</a>
+                  </div>
+                  <div class="short">
+                    {{ item.summary }}
+                    <div class="sourcename">{{ item.source }}</div>
+                  </div>
+                </div>
+              {% else %}
+                <div class="secondaryitems">
+                  <div class="headline-other">
+                    <a href="{{ item.url }}">{{ item.headline }}</a>
+                  </div>
+                  <div class="short">
+                    {{ item.summary }}
+                    <div class="sourcename">{{ item.source }}</div>
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+            {% if social %}
+            <div class="social-discussion">
+              <span class="social-label">Mastodon:</span>
+              {% for post in social %}<a href="{{ post.post_url }}" class="social-post-link">@{{ post.username }}</a>{% if not loop.last %} &middot; {% endif %}{% endfor %}
+            </div>
+            {% endif %}
+            <hr>
+          </div>
+      {% endfor %}
+
+      {% if not item1 %}
+        <p>No clustered news found for this date.</p>
+      {% endif %}
+
+        {% endblock %}

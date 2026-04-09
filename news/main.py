@@ -4,6 +4,7 @@ from datetime import date
 from datetime import datetime, timedelta
 from itertools import groupby
 from operator import itemgetter
+import calendar
 
 
 def getthenewsagain(section):
@@ -76,6 +77,98 @@ def getthenewsagain(section):
         grouped_with_social.append((clusterid, items_list, cluster_social))
 
     return grouped_with_social
+
+def getthenewsonday(section, target_date):
+    day_start = f'{target_date.strftime("%Y-%m-%d")} 00:00:00'
+    day_end = f'{(target_date + timedelta(days=1)).strftime("%Y-%m-%d")} 00:00:00'
+    cursor = db.mysql.connection.cursor()
+    cursor.execute("""
+        SELECT id, headline, summary, source, url, clusterid, section, scrapedate,
+               pubdate, featured, clustercount, imageurl, new
+        FROM news
+        WHERE clusterid IS NOT NULL
+          AND section LIKE %s
+          AND scrapedate >= %s
+          AND scrapedate < %s
+          AND clustercount > 1
+        ORDER BY clusterid
+    """, (section, day_start, day_end))
+    newsitems = cursor.fetchall()
+    desc = cursor.description
+    column_names = [col[0] for col in desc]
+    data = [dict(zip(column_names, row)) for row in newsitems]
+    cursor.close()
+
+    data.sort(key=itemgetter('clusterid'))
+    grouped = []
+    for clusterid, items in groupby(data, key=itemgetter('clusterid')):
+        items_list = list(items)
+        grouped.append((clusterid, items_list))
+
+    grouped.sort(key=lambda x: x[1][0]['clustercount'], reverse=True)
+
+    all_urls = [item['url'] for _, items_list in grouped for item in items_list]
+    social_by_url = {}
+    if all_urls:
+        placeholders = ', '.join(['%s'] * len(all_urls))
+        cursor2 = db.mysql.connection.cursor()
+        cursor2.execute(f"""
+            SELECT username, user_url, post_url, card_url
+            FROM social_news
+            WHERE card_url IN ({placeholders})
+            ORDER BY created_at DESC
+        """, all_urls)
+        social_rows = cursor2.fetchall()
+        social_desc = cursor2.description
+        social_cols = [col[0] for col in social_desc]
+        cursor2.close()
+        for row in social_rows:
+            post = dict(zip(social_cols, row))
+            social_by_url.setdefault(post['card_url'], []).append(post)
+
+    grouped_with_social = []
+    for clusterid, items_list in grouped:
+        cluster_social = []
+        seen_post_urls = set()
+        for item in items_list:
+            for post in social_by_url.get(item['url'], []):
+                if post['post_url'] not in seen_post_urls:
+                    cluster_social.append(post)
+                    seen_post_urls.add(post['post_url'])
+        grouped_with_social.append((clusterid, items_list, cluster_social))
+
+    return grouped_with_social
+
+
+def _historical_date(years_ago):
+    today = date.today()
+    target_year = today.year - years_ago
+    # Handle Feb 29 on leap years: fall back to Feb 28
+    day = min(today.day, calendar.monthrange(target_year, today.month)[1])
+    return date(target_year, today.month, day)
+
+
+@app.route('/on-this-day/1year')
+def on_this_day_1year():
+    target = _historical_date(1)
+    target_dt = datetime(target.year, target.month, target.day)
+    item1 = getthenewsonday("nz", target_dt)
+    section = f'Aotearoa NZ News — {target.strftime("%-d %B %Y")}'
+    featured = getfeatured()
+    lastupdateddate = lastupdated()
+    return render_template('history.html', item1=item1, section=section, featured=featured, lastupdateddate=lastupdateddate)
+
+
+@app.route('/on-this-day/3years')
+def on_this_day_3years():
+    target = _historical_date(3)
+    target_dt = datetime(target.year, target.month, target.day)
+    item1 = getthenewsonday("nz", target_dt)
+    section = f'Aotearoa NZ News — {target.strftime("%-d %B %Y")}'
+    featured = getfeatured()
+    lastupdateddate = lastupdated()
+    return render_template('history.html', item1=item1, section=section, featured=featured, lastupdateddate=lastupdateddate)
+
 
 @app.route('/api/breakingnews')
 def api_breakingnews():

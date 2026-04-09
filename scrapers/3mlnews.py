@@ -68,7 +68,7 @@ def processnews(processsection):
     df["Text"] = df["Headline"] + " " + df["Summary"]
 
     # Load a pre-trained SentenceTransformer model
-    model = SentenceTransformer('all-MiniLM-L6-v2')
+    model = SentenceTransformer('all-MiniLM-L6-v2', local_files_only=True)
 
     # Generate embeddings for the text
     embeddings = model.encode(df["Text"].tolist())
@@ -94,10 +94,11 @@ def processnews(processsection):
                 visited.add(j)
         groups.append(group)
 
-    # set custerid to null for all news items in the section so we can set a new one
+    # set clusterid to null for recent news items in the section so we can set a new one
+    # (uses the same newsday window — historical clusterids from previous years are preserved)
     cursor = connection.cursor()
-    mysqlquery = "UPDATE news SET clusterid = NULL where section = %s"
-    cursor.execute(mysqlquery, (processsection,))
+    mysqlquery = "UPDATE news SET clusterid = NULL WHERE section = %s AND scrapedate > %s"
+    cursor.execute(mysqlquery, (processsection, newsday))
     connection.commit()
 
     for idx, group in enumerate(groups):
