@@ -105,13 +105,13 @@
           {% block sidebar %}
           <div class="liveupdates" id="liveupdates">&nbsp;</div>
 
-          <h4>On This Day</h4>
+          <h4 class="mt-4">On This Day</h4>
           <ul>
             <li><a href="/on-this-day/1year">News this day last year</a></li>
             <li><a href="/on-this-day/3years">News this day 3 years ago</a></li>
           </ul>
 
-          <h4>Some Trending Things</h4>
+          <h4 class="mt-4">Some Trending Things</h4>
 
           {% for category, feature in featured | groupby("category") %}
           <br>

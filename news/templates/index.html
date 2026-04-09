@@ -1,70 +1,71 @@
 {% extends 'base.html' %}
 {% set active_page = section %}
 
- {% block content %}
+{% block content %}
 
-       <div id="breakingnews"></div>
+<div id="breakingnews"></div>
 
-      <h2 class="section">{% block title %} {{ section }} {% endblock %}</h2>
-  
-      {% for clusterid, items, social in item1 %}
-          <div class="news-cluster">
-            {% for item in items %}
-              {% if loop.index == 1 %}
-                <div class="primary-item">
-                  {% if item.imageurl %}
-                    <img src="{{ item.imageurl }}" class="newsitemimg" alt="News image for {{ item.headline }}">
-                  {% endif %}
-                  <div class="headline">
-                    <a href="{{ item.url }}">{{ item.headline }}</a>
-                    {% if item.new == 1 %}
-                      <div class="newnews">New</div>
-                    {% endif %}
-                  </div>
-                  <div class="short">
-                    {{ item.summary }}
-                    <div class="sourcename">
-                      {{ item.source }} &nbsp;&nbsp;&nbsp; {{ item.pubdate|default('') }}
-                    </div>
-                  </div>
-                </div>
-              {% else %}
-                <div class="secondaryitems">
-                  <div class="headline-other">
-                    <a href="{{ item.url }}">{{ item.headline }}</a>
-                    {% if item.new == 1 %}
-                      <div class="newnews">New</div>
-                    {% endif %}
-                  </div>
-                  <div class="short">
-                    {{ item.summary }}
-                    <div class="sourcename">{{ item.source }}</div>
-                  </div>
-                </div>
-              {% endif %}
-            {% endfor %}
-            {% if social %}
-            <div class="social-discussion">
-              <span class="social-label">Mastodon:</span>
-              {% for post in social %}<a href="{{ post.post_url }}" class="social-post-link">@{{ post.username }}</a>{% if not loop.last %} &middot; {% endif %}{% endfor %}
-            </div>
-            {% endif %}
-            <hr>
-          </div>
-      {% endfor %}
-  
+<h2 class="section">{% block title %} {{ section }} {% endblock %}</h2>
+
+{% for clusterid, items, social in item1 %}
+<div class="news-cluster">
+  {% for item in items %}
+  {% if loop.index == 1 %}
+  <div class="primary-item">
+    {% if item.imageurl %}
+    <img src="{{ item.imageurl }}" class="newsitemimg" alt="News image for {{ item.headline }}">
+    {% endif %}
+    <div class="headline">
+      <a href="{{ item.url }}">{{ item.headline }}</a>
+      {% if item.new == 1 %}
+      <div class="newnews">New</div>
+      {% endif %}
+    </div>
+    <div class="short">
+      {{ item.summary }}
+      <div class="sourcename">
+        {{ item.source }} &nbsp;&nbsp;&nbsp; {{ item.pubdate|default('') }}
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="secondaryitems">
+    <div class="headline-other">
+      <a href="{{ item.url }}">{{ item.headline }}</a>
+      {% if item.new == 1 %}
+      <div class="newnews">New</div>
+      {% endif %}
+    </div>
+    <div class="short">
+      {{ item.summary }}
+      <div class="sourcename">{{ item.source }}</div>
+    </div>
+  </div>
+  {% endif %}
+  {% endfor %}
+  {% if social %}
+  <div class="social-discussion">
+    <span class="social-label">Mastodon:</span>
+    {% for post in social %}<a href="{{ post.post_url }}" class="social-post-link">@{{ post.username }}</a>{% if not
+    loop.last %} &middot; {% endif %}{% endfor %}
+  </div>
+  {% endif %}
+  <hr>
+</div>
+{% endfor %}
+
 
 <script>
   function liveupdates() {
     fetch('/liveupdates/{{ lastid }}')
-      .then(function(r) { return r.text(); })
-      .then(function(data) { document.getElementById('liveupdates').innerHTML = data; });
+      .then(function (r) { return r.text(); })
+      .then(function (data) { document.getElementById('liveupdates').innerHTML = data; });
   }
 
   function breakingnews() {
     fetch('/api/breakingnews')
-      .then(function(r) { return r.text(); })
-      .then(function(data) { document.getElementById('breakingnews').innerHTML = data; });
+      .then(function (r) { return r.text(); })
+      .then(function (data) { document.getElementById('breakingnews').innerHTML = data; });
   }
 
   liveupdates();
@@ -74,4 +75,4 @@
 </script>
 
 
-        {% endblock %}
+{% endblock %}
